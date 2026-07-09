@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Ledger</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="sidebar">
+            <h2>📖 Ledger</h2>
+            <ul>
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('cv')">CV / Portfolio</a></li>
+                <li><a href="#" onclick="showPage('documents')">Documentation</a></li>
+            </ul>
+        </nav>
+        <main class="content">
+            <section id="home" class="page active">
+                <h1>Welcome to Your Digital Ledger</h1>
+                <p>This is a personal workspace designed to log progress, track projects, and store documentation.</p>
+            </section>
+            <section id="cv" class="page">
+                <h1>Curriculum Vitae</h1>
+                <p>Detail your educational background, professional skills, and project experience here.</p>
+            </section>
+            <section id="documents" class="page">
+                <h1>Document Library</h1>
+                <p>This section archives weekly logs, documentation, and files.</p>
+                <div class="log-list">
+                    <div class="log-item">
+                        <h3>Week 1: Project Initialization</h3>
+                        <small>Published: 2026-07-09</small>
+                        <p>Initialized the project using clean HTML, CSS, and JavaScript for maximum control and simplicity.</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
