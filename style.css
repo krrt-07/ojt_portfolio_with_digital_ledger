@@ -311,3 +311,115 @@ body {
     color: #ffffff;
     border-color: #0077b5;
 }
+
+/* Weekly Reports Header Formatting */
+.reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 2px solid #eae3d8;
+    padding-bottom: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* UI Accent Buttons */
+.btn-primary {
+    background-color: #800000;
+    color: #ffffff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+.btn-primary:hover { background-color: #600000; }
+
+.btn-secondary {
+    background-color: #eae3d8;
+    color: #5c4a3c;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Modal Popup Window Background Dark Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none; /* Keeps it hidden until clicked */
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+.modal-overlay.open { display: flex; }
+
+.modal-card {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Interactive Input Elements */
+.form-group {
+    margin-bottom: 1.25rem;
+    display: flex;
+    flex-direction: column;
+}
+.form-group label {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #5c4a3c;
+    margin-bottom: 6px;
+}
+.form-group input, .form-group textarea {
+    padding: 10px;
+    border: 1px solid #d1c7bd;
+    border-radius: 6px;
+    font-family: sans-serif;
+    font-size: 0.95rem;
+}
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 1.5rem;
+}
+
+/* Inline Header Alignment inside Report Cards */
+.log-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.log-item-header h3 {
+    margin: 0;
+}
+
+/* Red Trash Delete Button Styling */
+.btn-delete {
+    background: transparent;
+    border: none;
+    color: #a0a0a0;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 6px;
+    border-radius: 6px;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-delete:hover {
+    color: #dc3545; /* Turns vibrant crimson red on hover */
+    background-color: rgba(220, 53, 69, 0.08); /* Soft matching background accent glow */
+}

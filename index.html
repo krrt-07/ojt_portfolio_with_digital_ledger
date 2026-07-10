@@ -113,15 +113,54 @@
         </section>
 
         <!-- Weekly Report Section -->
+        <!-- Weekly Report Section -->
         <section id="weekly-report" class="page">
+        <div class="reports-header">
             <h2>Weekly Reports</h2>
-            <div class="log-list">
-            <div class="log-item">
-                <h3>Week 1 Report</h3>
-                <p>Orientation, environment setup, and introduction to the system workflow.</p>
-                <small>Submitted on July 2026</small>
+            <button id="open-report-modal" class="btn-primary">+ Create New Report</button>
+        </div>
+
+        <!-- Interactive Timeline Log Container -->
+        <div id="report-timeline" class="log-list">
+        <div class="log-item">
+            <div class="log-item-header">
+            <h3>Week 1 Report</h3>
+            <button class="btn-delete" title="Delete Report"><i class="fa-solid fa-trash-can"></i></button>
             </div>
+            <p><strong>Accomplished:</strong> Completed company onboarding, configured development environments, and established Git repository access trees.</p>
+            <p><strong>Key Learnings:</strong> Mastered team version control workflows and brushed up on modular UI deployment guidelines.</p>
+            <small>Logged on: July 2026</small>
+        </div>
+        </div>
+
+        <!-- Hidden Pop-up Modal Form Container -->
+        <div id="report-modal" class="modal-overlay">
+            <div class="modal-card">
+            <h3>Log Weekly Progress</h3>
+            <form id="report-form">
+                <div class="form-group">
+                <label>Week Selection</label>
+                <input type="text" id="report-week" placeholder="e.g., Week 2" required>
+                </div>
+                <div class="form-group">
+                <label>Submission Date</label>
+                <input type="date" id="report-date" required>
+                </div>
+                <div class="form-group">
+                <label>What did you accomplish?</label>
+                <textarea id="report-accomplished" rows="3" placeholder="List tasks completed..." required></textarea>
+                </div>
+                <div class="form-group">
+                <label>What have you learned?</label>
+                <textarea id="report-learned" rows="3" placeholder="Key insights gained..." required></textarea>
+                </div>
+                <div class="modal-actions">
+                <button type="button" id="close-report-modal" class="btn-secondary">Cancel</button>
+                <button type="submit" class="btn-primary">Save Report</button>
+                </div>
+            </form>
             </div>
+        </div>
         </section>
 
         <!-- Documents Section -->
