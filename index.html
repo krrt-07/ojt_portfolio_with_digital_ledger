@@ -164,21 +164,75 @@
         </section>
 
         <!-- Documents Section -->
-        <section id="documents" class="page">
-            <h2>Submitted Documents</h2>
-            <p>View your cleared files, MoA, internship clearance, and other completed legal credentials here.</p>
+        <!-- See Documents Section -->
+        <section id="see-documents" class="page">
+        <h2>Submitted Documents</h2>
+        <p class="section-desc">View and manage your cleared OJT credentials, endorsements, and certifications.</p>
+        
+        <!-- Dynamic Document Grid Shelf -->
+        <div id="document-shelf" class="document-grid">
+            <!-- Sample pre-loaded credential -->
+            <div class="doc-card privacy-public">
+            <div class="doc-icon"><i class="fa-solid fa-file-shield"></i></div>
+            <div class="doc-info">
+                <div class="doc-title-row">
+                <h4>OJT Endorsement Letter</h4>
+                <button class="btn-doc-delete" title="Delete Document"><i class="fa-solid fa-trash-can"></i></button>
+                </div>
+                <div class="doc-meta-row">
+                <small>Uploaded: 2026-07-10</small>
+                <span class="badge badge-public">Public</span>
+                </div>
+            </div>
+            <a href="#" class="btn-view" target="_blank">View File</a>
+            </div>
+        </div>
         </section>
 
         <!-- Add Documents Section -->
         <section id="add-documents" class="page">
-            <h2>Add Documents</h2>
-            <p>Upload files or add deployment attachments to your tracking registry below.</p>
-        </section>
+        <h2>Add New Document</h2>
+        <p class="section-desc">Upload credentials, medical clearances, or liability waivers directly to your repository shelf.</p>
+        
+        <div class="upload-container">
+            <form id="document-upload-form">
+            <div class="upload-dropzone">
+                <i class="fa-solid fa-cloud-arrow-up cloud-icon"></i>
+                <label for="file-input" class="file-label">Choose a file or drop it here</label>
+                <input type="file" id="file-input" accept="image/*, application/pdf" required />
+                <span id="file-name-preview" class="file-preview-text">No file selected</span>
+            </div>
+            
+            <!-- NEW: Document Custom Name Field -->
+            <div class="form-group" style="margin-top: 1.5rem;">
+                <label>Document Title / Custom Label</label>
+                <input type="text" id="doc-title-input" placeholder="e.g., Memorandum of Agreement (MoA)" required />
+            </div>
 
+            <!-- NEW: Date Picker Field -->
+            <div class="form-group">
+                <label>Date Uploaded</label>
+                <input type="date" id="doc-date-input" required />
+            </div>
+
+            <!-- NEW: Privacy Status Dropdown -->
+            <div class="form-group">
+                <label>Privacy Classification</label>
+                <select id="doc-privacy-input" required>
+                <option value="public">🌐 Public (Visible in Portfolio)</option>
+                <option value="confidential">🔒 Confidential (Restricted Access)</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Upload to Shelf</button>
+            </form>
+        </div>
+        </section>
         </main>
 
     </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
 </html>

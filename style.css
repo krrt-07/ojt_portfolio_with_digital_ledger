@@ -423,3 +423,191 @@ body {
     color: #dc3545; /* Turns vibrant crimson red on hover */
     background-color: rgba(220, 53, 69, 0.08); /* Soft matching background accent glow */
 }
+
+/* Document Vault Layout Grid */
+.document-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 1.5rem;
+}
+
+.doc-card {
+    background: #ffffff;
+    border: 1px solid #eef0eb;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s ease;
+}
+.doc-card:hover { transform: translateY(-3px); }
+
+.doc-icon {
+    font-size: 1.8rem;
+    color: #800000; /* Maroon theme accent */
+}
+
+.doc-info {
+    flex: 1;
+    overflow: hidden;
+}
+.doc-info h4 {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+    color: #2c2520;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.doc-info small { color: #a0a0a0; }
+
+.btn-view {
+    padding: 6px 12px;
+    background: #eae3d8;
+    color: #5c4a3c;
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border-radius: 6px;
+    transition: background 0.2s ease;
+}
+.btn-view:hover { background: #d1c7bd; }
+
+/* Drag and Drop Upload Area Box */
+.upload-container {
+    max-width: 550px;
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 16px;
+    border: 1px solid #eef0eb;
+    box-shadow: 0px 4px 12px rgba(0,0,0,0.02);
+}
+
+.upload-dropzone {
+    border: 2px dashed #d1c7bd;
+    border-radius: 12px;
+    padding: 40px 20px;
+    text-align: center;
+    background: #faf9f6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+}
+
+.cloud-icon {
+    font-size: 2.5rem;
+    color: #a0a0a0;
+    margin-bottom: 12px;
+}
+
+.file-label {
+    font-weight: bold;
+    color: #5c4a3c;
+    cursor: pointer;
+    margin-bottom: 6px;
+}
+
+.upload-dropzone input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.file-preview-text {
+    font-size: 0.85rem;
+    color: #800000;
+    font-style: italic;
+}
+
+/* Document Card Header Spacing adjustments */
+.doc-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 2px;
+}
+
+.doc-title-row h4 {
+    margin: 0 !important; /* Forces layout overrides */
+}
+
+/* File Shelf Delete Button Styling */
+.btn-doc-delete {
+    background: transparent;
+    border: none;
+    color: #b0b0b0;
+    font-size: 0.95rem;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    line-height: 1;
+    transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.btn-doc-delete:hover {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.08);
+}
+
+/* Metadata Layout Configuration */
+.doc-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.doc-meta-row small {
+    color: #a0a0a0;
+}
+
+/* Privacy Badges Styling */
+.badge {
+    font-size: 0.75rem;
+    font-weight: bold;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+}
+
+.badge-public {
+    background-color: rgba(40, 167, 69, 0.1);
+    color: #28a745;
+    border: 1px solid rgba(40, 167, 69, 0.2);
+}
+
+.badge-confidential {
+    background-color: rgba(220, 53, 69, 0.1);
+    color: #dc3545;
+    border: 1px solid rgba(220, 53, 69, 0.2);
+}
+
+/* Form Dropdown Input Specific Alignment */
+.form-group select {
+    padding: 10px;
+    border: 1px solid #d1c7bd;
+    border-radius: 6px;
+    font-family: sans-serif;
+    font-size: 0.95rem;
+    background-color: #ffffff;
+    color: #2c2520;
+}
+
+/* Confidential Card Treatment Visual Alert */
+.doc-card.privacy-confidential {
+    border-left: 4px solid #dc3545;
+    background-color: #fdfbfa;
+}
+.doc-card.privacy-confidential .doc-icon {
+    color: #dc3545;
+}
