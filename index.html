@@ -21,7 +21,7 @@
         <li class="dropdown">
         <a href="#" class="dropdown-toggle">Documents <span class="arrow">▼</span></a>
         <ul class="submenu">
-            <li><a href="#see-documents" class="nav-link">See Documents</a></li>
+            <li><a href="#see-documents" class="nav-link">View Documents</a></li>
             <li><a href="#add-documents" class="nav-link">Add Documents</a></li>
         </ul>
         </li>
@@ -42,16 +42,74 @@
         <!-- Main Dynamic Content Pages -->
         <main class="content">
         
-        <!-- Home Section -->
+        <!-- Home Section: About Me Dashboard -->
         <section id="home" class="page active">
-            <h2>Home Dashboard</h2>
-            <p>Welcome back! Here is your quick look at your current OJT stats.</p>
+        <div class="about-me-container">
+            <h2>About Me</h2>
+            <p class="lead-text">
+            I am a Computer Engineering student with a strong interest in combining hardware fundamentals with software development to create practical and efficient solutions. This interactive portfolio showcases my learning journey, achievements, and hands-on experiences throughout my On-the-Job Training (OJT). It reflects the projects I have worked on, the skills I have developed, and the knowledge I continue to build. I strive to write clean and maintainable code, develop responsive and user-friendly interfaces, and create efficient program logic while continuously improving my technical and problem-solving abilities.
+
+            </p>
+            <!-- Quick Contact Links -->
+            <div class="social-links">
+            <a href="https://www.facebook.com/prince.kurt.56232/" target="_blank" class="social-btn facebook" title="Facebook">
+                <i class="fa-brands fa-facebook-f"></i>
+            </a>
+            <a href="https://github.com/krrt-07" target="_blank" class="social-btn github" title="GitHub">
+                <i class="fa-brands fa-github"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/jacin-kurt-ocampo-270813361/" target="_blank" class="social-btn linkedin" title="LinkedIn">
+                <i class="fa-brands fa-linkedin-in"></i>
+            </a>
+            </div>
+            <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>OJT Portfolio</title>
+            
+            <!-- Add this line below to load the Facebook, GitHub, and LinkedIn logos -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+            
+            <link rel="stylesheet" href="style.css">
+            </head>
+
+            <!-- Skill Cards Grid -->
+            <div class="skills-section">
+            <h3>Core Competencies</h3>
+            <div class="skills-grid">
+                <div class="skill-card">
+                <i class="fa-solid fa-code"></i>
+                <h4>Software Development</h4>
+                <p>HTML5, CSS3, JavaScript (ES6+), responsive layout design, and version control structures.</p>
+                </div>
+                <div class="skill-card">
+                <i class="fa-solid fa-microchip"></i>
+                <h4>Hardware Systems</h4>
+                <p>Familiarity with digital logic design, embedded systems architectures, and microcontrollers.</p>
+                </div>
+                <div class="skill-card">
+                <i class="fa-solid fa-list-check"></i>
+                <h4>Project Tracking</h4>
+                <p>Experience organizing development tasks, writing clear documentation logs, and handling version trees via Git.</p>
+                </div>
+            </div>
+            </div>
+
+            <!-- OJT Goals Section -->
+            <div class="goals-section">
+            <h3>OJT Objectives</h3>
+            <ul>
+                <li>Apply foundational academic computing theories directly to real-world deployment challenges.</li>
+                <li>Master workspace best practices, technical documentation standards, and collaborative code structures.</li>
+                <li>Develop production-grade problems-solving skills under direct industry guidance.</li>
+            </ul>
+            </div>
+        </div>
         </section>
-        
         <!-- Company Profile Section -->
         <section id="company-profile" class="page">
             <h2>Company Profile</h2>
-            <p>Information about your OJT host company, their mission, vision, and your department assignment goes here.</p>
+            <p>Still looking for a Company</p>
         </section>
 
         <!-- Weekly Report Section -->
