@@ -7,17 +7,26 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
+    <div class="container">
 
-  <!-- Left Sidebar remains the same -->
-  <nav class="sidebar">
+    <!-- Left Sidebar with new links -->
+    <nav class="sidebar">
     <h2>Portfolio</h2>
     <ul>
-      <li><a href="#home" class="nav-link active">Home</a></li>
-      <li><a href="#cv" class="nav-link">CV</a></li>
-      <li><a href="#documentation" class="nav-link">Documentation</a></li>
+        <li><a href="#home" class="nav-link active">Home</a></li>
+        <li><a href="#company-profile" class="nav-link">Company Profile</a></li>
+        <li><a href="#weekly-report" class="nav-link">Weekly Report</a></li>
+        
+        <!-- Collapsible Dropdown Item -->
+        <li class="dropdown">
+        <a href="#" class="dropdown-toggle">Documents <span class="arrow">▼</span></a>
+        <ul class="submenu">
+            <li><a href="#see-documents" class="nav-link">See Documents</a></li>
+            <li><a href="#add-documents" class="nav-link">Add Documents</a></li>
+        </ul>
+        </li>
     </ul>
-  </nav>
+    </nav>
 
     <!-- Right side layout container -->
     <div class="main-wrapper">
@@ -32,17 +41,43 @@
 
         <!-- Main Dynamic Content Pages -->
         <main class="content">
+        
+        <!-- Home Section -->
         <section id="home" class="page active">
-            <!-- Your home content -->
+            <h2>Home Dashboard</h2>
+            <p>Welcome back! Here is your quick look at your current OJT stats.</p>
         </section>
         
-        <section id="cv" class="page">
-            <!-- Your CV content -->
+        <!-- Company Profile Section -->
+        <section id="company-profile" class="page">
+            <h2>Company Profile</h2>
+            <p>Information about your OJT host company, their mission, vision, and your department assignment goes here.</p>
         </section>
 
-        <section id="documentation" class="page">
-            <!-- Your documentation content -->
+        <!-- Weekly Report Section -->
+        <section id="weekly-report" class="page">
+            <h2>Weekly Reports</h2>
+            <div class="log-list">
+            <div class="log-item">
+                <h3>Week 1 Report</h3>
+                <p>Orientation, environment setup, and introduction to the system workflow.</p>
+                <small>Submitted on July 2026</small>
+            </div>
+            </div>
         </section>
+
+        <!-- Documents Section -->
+        <section id="documents" class="page">
+            <h2>Submitted Documents</h2>
+            <p>View your cleared files, MoA, internship clearance, and other completed legal credentials here.</p>
+        </section>
+
+        <!-- Add Documents Section -->
+        <section id="add-documents" class="page">
+            <h2>Add Documents</h2>
+            <p>Upload files or add deployment attachments to your tracking registry below.</p>
+        </section>
+
         </main>
 
     </div>

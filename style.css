@@ -45,7 +45,7 @@ body {
 }
 
 .sidebar li {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.25rem; /* Slightly tighter gap so more menu items fit cleanly */
 }
 
 /* ==========================================================================
@@ -152,4 +152,47 @@ body {
 
 .log-item small {
     color: #777;
+}
+
+/* Dropdown and Submenu Layout */
+.dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.arrow {
+    font-size: 0.7rem;
+    transition: transform 0.2s ease;
+}
+
+/* Submenu container (Hidden by default) */
+.submenu {
+    max-height: 0;
+    overflow: hidden;
+    list-style: none;
+    padding-left: 1rem; /* Indents the child sections */
+    transition: max-height 0.3s ease-in-out;
+}
+
+/* Reveal Submenu on Hover */
+.dropdown:hover .submenu {
+    max-height: 150px; /* Expands to show options */
+}
+
+/* Rotate arrow indicator on hover */
+.dropdown:hover .arrow {
+    transform: rotate(180deg);
+}
+
+/* Style the nested links inside the bubble */
+.submenu a {
+    font-size: 0.95rem;
+    padding: 8px 12px;
+    margin: 2px 0;
+    color: #9c8c7c;
 }
