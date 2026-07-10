@@ -4,233 +4,234 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Ledger</title>
+    <!-- Loaded FontAwesome library up top for UI icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
 
-    <!-- Left Sidebar with new links -->
-    <nav class="sidebar">
-    <h2>Portfolio</h2>
-    <ul>
-        <li><a href="#home" class="nav-link active">Home</a></li>
-        <li><a href="#company-profile" class="nav-link">Company Profile</a></li>
-        <li><a href="#weekly-report" class="nav-link">Weekly Report</a></li>
-        
-        <!-- Collapsible Dropdown Item -->
-        <li class="dropdown">
-        <a href="#" class="dropdown-toggle">Documents <span class="arrow">▼</span></a>
-        <ul class="submenu">
-            <li><a href="#see-documents" class="nav-link">View Documents</a></li>
-            <li><a href="#add-documents" class="nav-link">Add Documents</a></li>
-        </ul>
-        </li>
-    </ul>
-    </nav>
-
-    <!-- Right side layout container -->
-    <div class="main-wrapper">
-        
-        <!-- Top Header Banner -->
-        <header class="top-banner">
-        <div class="banner-content">
-            <h1>Jacin Kurt S. Ocampo</h1>
-            <p>BS Computer Engineering | OJT Portfolio</p>
-        </div>
-        </header>
-
-        <!-- Main Dynamic Content Pages -->
-        <main class="content">
-        
-        <!-- Home Section: About Me Dashboard -->
-        <section id="home" class="page active">
-        <div class="about-me-container">
-            <h2>About Me</h2>
-            <p class="lead-text">
-            I am a Computer Engineering student with a strong interest in combining hardware fundamentals with software development to create practical and efficient solutions. This interactive portfolio showcases my learning journey, achievements, and hands-on experiences throughout my On-the-Job Training (OJT). It reflects the projects I have worked on, the skills I have developed, and the knowledge I continue to build. I strive to write clean and maintainable code, develop responsive and user-friendly interfaces, and create efficient program logic while continuously improving my technical and problem-solving abilities.
-
-            </p>
-            <!-- Quick Contact Links -->
-            <div class="social-links">
-            <a href="https://www.facebook.com/prince.kurt.56232/" target="_blank" class="social-btn facebook" title="Facebook">
-                <i class="fa-brands fa-facebook-f"></i>
-            </a>
-            <a href="https://github.com/krrt-07" target="_blank" class="social-btn github" title="GitHub">
-                <i class="fa-brands fa-github"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/jacin-kurt-ocampo-270813361/" target="_blank" class="social-btn linkedin" title="LinkedIn">
-                <i class="fa-brands fa-linkedin-in"></i>
-            </a>
-            </div>
-            <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>OJT Portfolio</title>
-            
-            <!-- Add this line below to load the Facebook, GitHub, and LinkedIn logos -->
-            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-            
-            <link rel="stylesheet" href="style.css">
-            </head>
-
-            <!-- Skill Cards Grid -->
-            <div class="skills-section">
-            <h3>Core Competencies</h3>
-            <div class="skills-grid">
-                <div class="skill-card">
-                <i class="fa-solid fa-code"></i>
-                <h4>Software Development</h4>
-                <p>HTML5, CSS3, JavaScript (ES6+), responsive layout design, and version control structures.</p>
-                </div>
-                <div class="skill-card">
-                <i class="fa-solid fa-microchip"></i>
-                <h4>Hardware Systems</h4>
-                <p>Familiarity with digital logic design, embedded systems architectures, and microcontrollers.</p>
-                </div>
-                <div class="skill-card">
-                <i class="fa-solid fa-list-check"></i>
-                <h4>Project Tracking</h4>
-                <p>Experience organizing development tasks, writing clear documentation logs, and handling version trees via Git.</p>
-                </div>
-            </div>
-            </div>
-
-            <!-- OJT Goals Section -->
-            <div class="goals-section">
-            <h3>OJT Objectives</h3>
+        <!-- Left Sidebar Structure -->
+        <nav class="sidebar">
+            <h2>Portfolio</h2>
             <ul>
-                <li>Apply foundational academic computing theories directly to real-world deployment challenges.</li>
-                <li>Master workspace best practices, technical documentation standards, and collaborative code structures.</li>
-                <li>Develop production-grade problems-solving skills under direct industry guidance.</li>
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#company-profile" class="nav-link">Company Profile</a></li>
+                <li><a href="#weekly-report" class="nav-link">Weekly Report</a></li>
+                
+                <!-- Fixed: Wrapped properly inside li container -->
+                <li><a href="#full-access" class="nav-link"><i class="fa-solid fa-lock"></i> Sign up for full access</a></li>
+                
+                <!-- Collapsible Dropdown Item -->
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle">Documents <span class="arrow">▼</span></a>
+                    <ul class="submenu">
+                        <li><a href="#see-documents" class="nav-link">View Documents</a></li>
+                        <li><a href="#add-documents" class="nav-link">Add Documents</a></li>
+                    </ul>
+                </li>
             </ul>
-            </div>
-        </div>
-        </section>
-        <!-- Company Profile Section -->
-        <section id="company-profile" class="page">
-            <h2>Company Profile</h2>
-            <p>Still looking for a Company</p>
-        </section>
+        </nav>
 
-        <!-- Weekly Report Section -->
-        <!-- Weekly Report Section -->
-        <section id="weekly-report" class="page">
-        <div class="reports-header">
-            <h2>Weekly Reports</h2>
-            <button id="open-report-modal" class="btn-primary">+ Create New Report</button>
-        </div>
-
-        <!-- Interactive Timeline Log Container -->
-        <div id="report-timeline" class="log-list">
-        <div class="log-item">
-            <div class="log-item-header">
-            <h3>Week 1 Report</h3>
-            <button class="btn-delete" title="Delete Report"><i class="fa-solid fa-trash-can"></i></button>
-            </div>
-            <p><strong>Accomplished:</strong> Completed company onboarding, configured development environments, and established Git repository access trees.</p>
-            <p><strong>Key Learnings:</strong> Mastered team version control workflows and brushed up on modular UI deployment guidelines.</p>
-            <small>Logged on: July 2026</small>
-        </div>
-        </div>
-
-        <!-- Hidden Pop-up Modal Form Container -->
-        <div id="report-modal" class="modal-overlay">
-            <div class="modal-card">
-            <h3>Log Weekly Progress</h3>
-            <form id="report-form">
-                <div class="form-group">
-                <label>Week Selection</label>
-                <input type="text" id="report-week" placeholder="e.g., Week 2" required>
-                </div>
-                <div class="form-group">
-                <label>Submission Date</label>
-                <input type="date" id="report-date" required>
-                </div>
-                <div class="form-group">
-                <label>What did you accomplish?</label>
-                <textarea id="report-accomplished" rows="3" placeholder="List tasks completed..." required></textarea>
-                </div>
-                <div class="form-group">
-                <label>What have you learned?</label>
-                <textarea id="report-learned" rows="3" placeholder="Key insights gained..." required></textarea>
-                </div>
-                <div class="modal-actions">
-                <button type="button" id="close-report-modal" class="btn-secondary">Cancel</button>
-                <button type="submit" class="btn-primary">Save Report</button>
-                </div>
-            </form>
-            </div>
-        </div>
-        </section>
-
-        <!-- Documents Section -->
-        <!-- See Documents Section -->
-        <section id="see-documents" class="page">
-        <h2>Submitted Documents</h2>
-        <p class="section-desc">View and manage your cleared OJT credentials, endorsements, and certifications.</p>
-        
-        <!-- Dynamic Document Grid Shelf -->
-        <div id="document-shelf" class="document-grid">
-            <!-- Sample pre-loaded credential -->
-            <div class="doc-card privacy-public">
-            <div class="doc-icon"><i class="fa-solid fa-file-shield"></i></div>
-            <div class="doc-info">
-                <div class="doc-title-row">
-                <h4>OJT Endorsement Letter</h4>
-                <button class="btn-doc-delete" title="Delete Document"><i class="fa-solid fa-trash-can"></i></button>
-                </div>
-                <div class="doc-meta-row">
-                <small>Uploaded: 2026-07-10</small>
-                <span class="badge badge-public">Public</span>
-                </div>
-            </div>
-            <a href="#" class="btn-view" target="_blank">View File</a>
-            </div>
-        </div>
-        </section>
-
-        <!-- Add Documents Section -->
-        <section id="add-documents" class="page">
-        <h2>Add New Document</h2>
-        <p class="section-desc">Upload credentials, medical clearances, or liability waivers directly to your repository shelf.</p>
-        
-        <div class="upload-container">
-            <form id="document-upload-form">
-            <div class="upload-dropzone">
-                <i class="fa-solid fa-cloud-arrow-up cloud-icon"></i>
-                <label for="file-input" class="file-label">Choose a file or drop it here</label>
-                <input type="file" id="file-input" accept="image/*, application/pdf" required />
-                <span id="file-name-preview" class="file-preview-text">No file selected</span>
-            </div>
+        <!-- Right side layout container -->
+        <div class="main-wrapper">
             
-            <!-- NEW: Document Custom Name Field -->
-            <div class="form-group" style="margin-top: 1.5rem;">
-                <label>Document Title / Custom Label</label>
-                <input type="text" id="doc-title-input" placeholder="e.g., Memorandum of Agreement (MoA)" required />
-            </div>
+            <!-- Top Header Banner -->
+            <header class="top-banner">
+                <div class="banner-content">
+                    <h1>Jacin Kurt S. Ocampo</h1>
+                    <p>BS Computer Engineering | OJT Portfolio</p>
+                </div>
+            </header>
 
-            <!-- NEW: Date Picker Field -->
-            <div class="form-group">
-                <label>Date Uploaded</label>
-                <input type="date" id="doc-date-input" required />
-            </div>
-
-            <!-- NEW: Privacy Status Dropdown -->
-            <div class="form-group">
-                <label>Privacy Classification</label>
-                <select id="doc-privacy-input" required>
-                <option value="public">🌐 Public (Visible in Portfolio)</option>
-                <option value="confidential">🔒 Confidential (Restricted Access)</option>
-                </select>
-            </div>
+            <!-- Main Dynamic Content Pages -->
+            <main class="content">
             
-            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Upload to Shelf</button>
-            </form>
-        </div>
-        </section>
-        </main>
+                <!-- Home Section: About Me Dashboard -->
+                <section id="home" class="page active">
+                    <div class="about-me-container">
+                        <h2>About Me</h2>
+                        <p class="lead-text">
+                            I am a Computer Engineering student with a strong interest in combining hardware fundamentals with software development to create practical and efficient solutions. This interactive portfolio showcases my learning journey, achievements, and hands-on experiences throughout my On-the-Job Training (OJT). It reflects the projects I have worked on, the skills I have developed, and the knowledge I continue to build. I strive to write clean and maintainable code, develop responsive and user-friendly interfaces, and create efficient program logic while continuously improving my technical and problem-solving abilities.
+                        </p>
+                        <!-- Quick Contact Links -->
+                        <div class="social-links">
+                            <a href="https://www.facebook.com/prince.kurt.56232/" target="_blank" class="social-btn facebook" title="Facebook">
+                                <i class="fa-brands fa-facebook-f"></i>
+                            </a>
+                            <a href="https://github.com/krrt-07" target="_blank" class="social-btn github" title="GitHub">
+                                <i class="fa-brands fa-github"></i>
+                            </a>
+                            <a href="https://www.linkedin.com/in/jacin-kurt-ocampo-270813361/" target="_blank" class="social-btn linkedin" title="LinkedIn">
+                                <i class="fa-brands fa-linkedin-in"></i>
+                            </a>
+                        </div>
 
-    </div>
+                        <!-- Skill Cards Grid -->
+                        <div class="skills-section">
+                            <h3>Core Competencies</h3>
+                            <div class="skills-grid">
+                                <div class="skill-card">
+                                    <i class="fa-solid fa-code"></i>
+                                    <h4>Software Development</h4>
+                                    <p>HTML5, CSS3, JavaScript (ES6+), responsive layout design, and version control structures.</p>
+                                </div>
+                                <div class="skill-card">
+                                    <i class="fa-solid fa-microchip"></i>
+                                    <h4>Hardware Systems</h4>
+                                    <p>Familiarity with digital logic design, embedded systems architectures, and microcontrollers.</p>
+                                </div>
+                                <div class="skill-card">
+                                    <i class="fa-solid fa-list-check"></i>
+                                    <h4>Project Tracking</h4>
+                                    <p>Experience organizing development tasks, writing clear documentation logs, and handling version trees via Git.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- OJT Goals Section -->
+                        <div class="goals-section">
+                            <h3>OJT Objectives</h3>
+                            <ul>
+                                <li>Apply foundational academic computing theories directly to real-world deployment challenges.</li>
+                                <li>Master workspace best practices, technical documentation standards, and collaborative code structures.</li>
+                                <li>Develop production-grade problems-solving skills under direct industry guidance.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Company Profile Section -->
+                <section id="company-profile" class="page">
+                    <h2>Company Profile</h2>
+                    <p>Still looking for a Company</p>
+                </section>
+
+                <!-- Weekly Report Section -->
+                <section id="weekly-report" class="page">
+                    <div class="reports-header">
+                        <h2>Weekly Reports</h2>
+                        <button id="open-report-modal" class="btn-primary">+ Create New Report</button>
+                    </div>
+
+                    <!-- Interactive Timeline Log Container -->
+                    <div id="report-timeline" class="log-list">
+                        <div class="log-item">
+                            <div class="log-item-header">
+                                <h3>Week 1 Report</h3>
+                                <button class="btn-delete" title="Delete Report"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>
+                            <p><strong>Accomplished:</strong> Completed company onboarding, configured development environments, and established Git repository access trees.</p>
+                            <p><strong>Key Learnings:</strong> Mastered team version control workflows and brushed up on modular UI deployment guidelines.</p>
+                            <small>Logged on: July 2026</small>
+                        </div>
+                    </div>
+
+                    <!-- Hidden Pop-up Modal Form Container -->
+                    <div id="report-modal" class="modal-overlay">
+                        <div class="modal-card">
+                            <h3>Log Weekly Progress</h3>
+                            <form id="report-form">
+                                <div class="form-group">
+                                    <label>Week Selection</label>
+                                    <input type="text" id="report-week" placeholder="e.g., Week 2" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Submission Date</label>
+                                    <input type="date" id="report-date" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>What did you accomplish?</label>
+                                    <textarea id="report-accomplished" rows="3" placeholder="List tasks completed..." required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>What have you learned?</label>
+                                    <textarea id="report-learned" rows="3" placeholder="Key insights gained..." required></textarea>
+                                </div>
+                                <div class="modal-actions">
+                                    <button type="button" id="close-report-modal" class="btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn-primary">Save Report</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Documents Section -->
+                <section id="see-documents" class="page">
+                    <h2>Submitted Documents</h2>
+                    <p class="section-desc">View and manage your cleared OJT credentials, endorsements, and certifications.</p>
+                    
+                    <!-- Dynamic Document Grid Shelf -->
+                    <div id="document-shelf" class="document-grid">
+                        <div class="doc-card privacy-public">
+                            <div class="doc-icon"><i class="fa-solid fa-file-shield"></i></div>
+                            <div class="doc-info">
+                                <div class="doc-title-row">
+                                    <h4>OJT Endorsement Letter</h4>
+                                    <button class="btn-doc-delete" title="Delete Document"><i class="fa-solid fa-trash-can"></i></button>
+                                </div>
+                                <div class="doc-meta-row">
+                                    <small>Uploaded: 2026-07-10</small>
+                                    <span class="badge badge-public">Public</span>
+                                </div>
+                            </div>
+                            <a href="#" class="btn-view" target="_blank">View File</a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Add Documents Section -->
+                <section id="add-documents" class="page">
+                    <h2>Add New Document</h2>
+                    <p class="section-desc">Upload credentials, medical clearances, or liability waivers directly to your repository shelf.</p>
+                    
+                    <div class="upload-container">
+                        <form id="document-upload-form">
+                            <div class="upload-dropzone">
+                                <i class="fa-solid fa-cloud-arrow-up cloud-icon"></i>
+                                <label for="file-input" class="file-label">Choose a file or drop it here</label>
+                                <input type="file" id="file-input" accept="image/*, application/pdf" required />
+                                <span id="file-name-preview" class="file-preview-text">No file selected</span>
+                            </div>
+                            
+                            <div class="form-group" style="margin-top: 1.5rem;">
+                                <label>Document Title / Custom Label</label>
+                                <input type="text" id="doc-title-input" placeholder="e.g., Memorandum of Agreement (MoA)" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Date Uploaded</label>
+                                <input type="date" id="doc-date-input" required />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Privacy Classification</label>
+                                <select id="doc-privacy-input" required>
+                                    <option value="public">🌐 Public (Visible in Portfolio)</option>
+                                    <option value="confidential">🔒 Confidential (Restricted Access)</option>
+                                </select>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Upload to Shelf</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Fixed: Moved "full-access" container inside the <main> block alongside other pages -->
+                <section id="full-access" class="page">
+                    <h2>Unlock Full Access</h2>
+                    <p>Enter the administrator credential password to view confidential documents and enable management controls.</p>
+                    <div class="auth-form-container" style="max-width: 400px; margin-top: 20px;">
+                        <input type="password" id="admin-password-input" placeholder="Enter password..." style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                        <button type="button" id="btn-unlock-access" style="background-color: #800000; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%;">Unlock Access</button>
+                        <p id="auth-message" style="margin-top: 10px; font-weight: bold; display: none;"></p>
+                    </div>
+                </section>
+
+            </main>
+
+        </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
