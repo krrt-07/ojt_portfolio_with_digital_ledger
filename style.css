@@ -1,63 +1,98 @@
 body {
     font-family: 'Georgia', serif;
-    background-color: #000000;
+    background-color: #f4f0ea;
     color: #000000;
     margin: 0;
     padding: 0;
 }
+
 .container {
     display: flex;
     min-height: 100vh;
 }
+
 .sidebar {
     width: 250px;
-    background-color: #fe5f55;
-    padding: 2rem;
-    border-right: 1px solid #000000;
+    background-color: #1e1e1e;
+    padding: 2rem 1rem; /* Adjusted horizontal padding slightly for the bubbles */
+    border-right: 1px solid #d1bdbd;
+    box-sizing: border-box;
 }
+
 .sidebar h2 {
     margin-top: 0;
-    color: #000000;
+    margin-left: 1rem; /* Aligns header with the link text */
+    color: #fff6f6;
 }
+
 .sidebar ul {
     list-style: none;
     padding: 0;
 }
+
 .sidebar li {
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem; /* Tighter spacing for look and feel */
 }
+
+/* --- iOS Bubble Style Links --- */
 .sidebar a {
+    display: block; /* Stretches the bubble frame width */
     color: #ffffff;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
+    padding: 12px 16px;
+    border-radius: 12px; /* Smooth iOS pill rounding */
+    
+    /* Smooth transition for the bubble background popping in */
+    transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.2s ease;
 }
+
+/* iOS-style Hover Bubble */
 .sidebar a:hover {
-    text-decoration: underline;
+    text-decoration: none; /* Replaced underline with bubble fill */
+    background-color: rgb(255, 255, 255); /* Transparent splash of your brown accent */
+    color: #ff0000bc;
 }
+
+/* iOS-style Active Selected Bubble */
+.sidebar a.active {
+    background-color: #f4f0ea; /* Crisp contrasting background bubble */
+    color: #5c4a3c;           /* Deep elegant brown text focus */
+    
+    /* Elegant soft shadow matching iOS layout structures */
+    box-shadow: 0px 3px 8px rgba(92, 74, 60, 0.06), 0px 1px 2px rgba(92, 74, 60, 0.04);
+}
+
 .content {
     flex: 1;
     padding: 3rem;
-    background-color: #ffffff;
+    background-color: #faf8f5;
 }
+
 .page {
     display: none;
 }
+
 .page.active {
     display: block;
 }
+
 .log-list {
     margin-top: 2rem;
 }
+
 .log-item {
     margin-bottom: 1.5rem;
-    border-bottom: 1px dashed #000000;
+    border-bottom: 1px dashed #d1c7bd;
     padding-bottom: 1rem;
 }
+
 .log-item h3 {
     margin: 0 0 0.5rem 0;
-    color: #000000;
+    color: #5c4a3c;
 }
+
 .log-item small {
     color: #777;
 }
