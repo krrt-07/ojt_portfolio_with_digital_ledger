@@ -17,25 +17,28 @@ body {
 }
 
 /* ==========================================================================
-   2. Fixed Black Sidebar Component
+   2. Fixed Black Sidebar Component (Flexbox Layout)
    ========================================================================== */
 .sidebar {
     width: 250px;
-    background-color: #111111; /* Sleek matte black */
-    padding: 2rem 1rem;
+    background-color: #111111;
+    padding: 2rem 1rem 1.5rem 1rem;
     border-right: 1px solid #222222;
     box-sizing: border-box;
-    position: fixed; /* Locks sidebar to left edge */
+    position: fixed;
     height: 100vh;
     left: 0;
     top: 0;
     z-index: 10;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-.sidebar h2 {
+.sidebar-top h2 {
     margin-top: 0;
     margin-left: 1rem;
-    color: #ffffff; /* High contrast white headers */
+    color: #ffffff;
 }
 
 .sidebar ul {
@@ -45,7 +48,13 @@ body {
 }
 
 .sidebar li {
-    margin-bottom: 0.25rem; /* Slightly tighter gap so more menu items fit cleanly */
+    margin-bottom: 0.25rem;
+}
+
+/* Sidebar Bottom Container */
+.sidebar-bottom {
+    border-top: 1px solid #222222;
+    padding-top: 1rem;
 }
 
 /* ==========================================================================
@@ -53,27 +62,30 @@ body {
    ========================================================================== */
 .sidebar a {
     display: block;
-    color: #b5a494; /* Light readable vintage tone on black background */
+    color: #b5a494;
     text-decoration: none;
     font-weight: bold;
     font-size: 1.1rem;
     padding: 12px 16px;
-    border-radius: 12px; /* Smooth iOS pill rounding */
+    border-radius: 12px;
     transition: background-color 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), color 0.2s ease;
 }
 
-/* iOS-style Hover Bubble */
 .sidebar a:hover {
     text-decoration: none;
-    background-color: rgba(255, 108, 108, 0.381); /* Subtle white glow overlay */
+    background-color: rgba(255, 108, 108, 0.381);
     color: #ffffff;
 }
 
-/* iOS-style Active Selected Bubble */
 .sidebar a.active {
-    background-color: #dbdbdb; /* Crisp white bubble pops off dark background */
-    color: #ff0000;           /* Black text focus inside white active frame */
+    background-color: #dbdbdb;
+    color: #ff0000;
     box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.admin-nav-btn {
+    font-size: 0.95rem;
+    color: #888888;
 }
 
 /* ==========================================================================
@@ -83,24 +95,25 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    margin-left: 250px; /* Aligns with sidebar footprint to fix empty gaps */
+    margin-left: 250px;
     background-color: #faf8f5;
     min-height: 100vh;
     width: calc(100% - 250px);
 }
 
 .top-banner {
-    background-color: #800000; /* Deep Maroon Red */
+    background-color: #800000;
     padding: 2rem 3rem;
     color: #ffffff;
     width: 100%;
     box-sizing: border-box;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .banner-content {
-    border-left: 4px solid #ffcc00; /* Amber left vertical accent marker */
+    border-left: 4px solid #ffcc00;
     padding-left: 1rem;
 }
 
@@ -117,6 +130,17 @@ body {
     font-family: sans-serif;
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.8);
+}
+
+.admin-status-badge {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-family: sans-serif;
+    font-size: 0.85rem;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+    border: 1px solid rgba(255, 255, 255, 0.25);
 }
 
 /* ==========================================================================
@@ -170,26 +194,22 @@ body {
     transition: transform 0.2s ease;
 }
 
-/* Submenu container (Hidden by default) */
 .submenu {
     max-height: 0;
     overflow: hidden;
     list-style: none;
-    padding-left: 1rem; /* Indents the child sections */
+    padding-left: 1rem;
     transition: max-height 0.3s ease-in-out;
 }
 
-/* Reveal Submenu on Hover */
 .dropdown:hover .submenu {
-    max-height: 150px; /* Expands to show options */
+    max-height: 150px;
 }
 
-/* Rotate arrow indicator on hover */
 .dropdown:hover .arrow {
     transform: rotate(180deg);
 }
 
-/* Style the nested links inside the bubble */
 .submenu a {
     font-size: 0.95rem;
     padding: 8px 12px;
@@ -235,7 +255,7 @@ body {
 
 .skill-card i {
     font-size: 24px;
-    color: #800000; /* Maroon color match to top banner */
+    color: #800000;
     margin-bottom: 12px;
 }
 
@@ -263,14 +283,13 @@ body {
     color: #4a3e3d;
 }
 
-/* Social Buttons Row Container */
+/* Social Buttons */
 .social-links {
     display: flex;
     gap: 16px;
     margin-bottom: 2.5rem;
 }
 
-/* Base Social Button Framework */
 .social-btn {
     display: flex;
     align-items: center;
@@ -278,7 +297,7 @@ body {
     width: 45px;
     height: 45px;
     background-color: #ffffff;
-    color: #5c4a3c; /* Matches your dark brown aesthetic default */
+    color: #5c4a3c;
     border-radius: 50%;
     font-size: 1.2rem;
     text-decoration: none;
@@ -287,13 +306,11 @@ body {
     transition: transform 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.2s ease, color 0.2s ease;
 }
 
-/* Hover Physics Bounce Effect */
 .social-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.08);
 }
 
-/* Brand specific color styles on hover */
 .social-btn.facebook:hover {
     background-color: #1877f2;
     color: #ffffff;
@@ -322,6 +339,13 @@ body {
     margin-bottom: 2rem;
 }
 
+.section-desc {
+    margin: 4px 0 0 0;
+    color: #666;
+    font-family: sans-serif;
+    font-size: 0.95rem;
+}
+
 /* UI Accent Buttons */
 .btn-primary {
     background-color: #800000;
@@ -331,6 +355,8 @@ body {
     border-radius: 8px;
     font-weight: bold;
     cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
     transition: background 0.2s ease;
 }
 .btn-primary:hover { background-color: #600000; }
@@ -353,7 +379,7 @@ body {
     width: 100vw;
     height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
-    display: none; /* Keeps it hidden until clicked */
+    display: none;
     justify-content: center;
     align-items: center;
     z-index: 100;
@@ -407,21 +433,31 @@ body {
     margin: 0;
 }
 
-/* Red Trash Delete Button Styling */
-.btn-delete {
+.action-btn-group {
+    display: flex;
+    gap: 6px;
+}
+
+/* Action Control Icons */
+.btn-action {
     background: transparent;
     border: none;
     color: #a0a0a0;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
     padding: 6px;
     border-radius: 6px;
     transition: color 0.2s ease, background-color 0.2s ease;
 }
 
-.btn-delete:hover {
-    color: #dc3545; /* Turns vibrant crimson red on hover */
-    background-color: rgba(220, 53, 69, 0.08); /* Soft matching background accent glow */
+.btn-action.edit:hover {
+    color: #0077b5;
+    background-color: rgba(0, 119, 181, 0.08);
+}
+
+.btn-action.delete:hover {
+    color: #dc3545;
+    background-color: rgba(220, 53, 69, 0.08);
 }
 
 /* Document Vault Layout Grid */
@@ -447,22 +483,34 @@ body {
 
 .doc-icon {
     font-size: 1.8rem;
-    color: #800000; /* Maroon theme accent */
+    color: #800000;
 }
 
 .doc-info {
     flex: 1;
     overflow: hidden;
 }
-.doc-info h4 {
-    margin: 0 0 4px 0;
+
+.doc-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.doc-title-row h4 {
+    margin: 0;
     font-size: 1rem;
     color: #2c2520;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
-.doc-info small { color: #a0a0a0; }
+
+.doc-meta-row small {
+    color: #a0a0a0;
+}
 
 .btn-view {
     padding: 6px 12px;
@@ -528,86 +576,12 @@ body {
     font-style: italic;
 }
 
-/* Document Card Header Spacing adjustments */
-.doc-title-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 2px;
+/* Administrative Dynamic Visibility Switches */
+body:not(.is-admin) .admin-only,
+body:not(.is-admin) .admin-only-inline {
+    display: none !important;
 }
 
-.doc-title-row h4 {
-    margin: 0 !important; /* Forces layout overrides */
-}
-
-/* File Shelf Delete Button Styling */
-.btn-doc-delete {
-    background: transparent;
-    border: none;
-    color: #b0b0b0;
-    font-size: 0.95rem;
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 4px;
-    line-height: 1;
-    transition: color 0.2s ease, background-color 0.2s ease;
-}
-
-.btn-doc-delete:hover {
-    color: #dc3545;
-    background-color: rgba(220, 53, 69, 0.08);
-}
-
-/* Metadata Layout Configuration */
-.doc-meta-row {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 4px;
-}
-
-.doc-meta-row small {
-    color: #a0a0a0;
-}
-
-/* Privacy Badges Styling */
-.badge {
-    font-size: 0.75rem;
-    font-weight: bold;
-    padding: 2px 8px;
-    border-radius: 4px;
-    text-transform: uppercase;
-}
-
-.badge-public {
-    background-color: rgba(40, 167, 69, 0.1);
-    color: #28a745;
-    border: 1px solid rgba(40, 167, 69, 0.2);
-}
-
-.badge-confidential {
-    background-color: rgba(220, 53, 69, 0.1);
-    color: #dc3545;
-    border: 1px solid rgba(220, 53, 69, 0.2);
-}
-
-/* Form Dropdown Input Specific Alignment */
-.form-group select {
-    padding: 10px;
-    border: 1px solid #d1c7bd;
-    border-radius: 6px;
-    font-family: sans-serif;
-    font-size: 0.95rem;
-    background-color: #ffffff;
-    color: #2c2520;
-}
-
-/* Confidential Card Treatment Visual Alert */
-.doc-card.privacy-confidential {
-    border-left: 4px solid #dc3545;
-    background-color: #fdfbfa;
-}
-.doc-card.privacy-confidential .doc-icon {
-    color: #dc3545;
+body:not(.is-admin) .admin-only-page {
+    display: none !important;
 }

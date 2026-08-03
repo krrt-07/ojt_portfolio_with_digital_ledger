@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Ledger</title>
-    <!-- Loaded FontAwesome library up top for UI icons -->
+    <!-- FontAwesome Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
@@ -13,24 +13,30 @@
 
         <!-- Left Sidebar Structure -->
         <nav class="sidebar">
-            <h2>Portfolio</h2>
-            <ul>
-                <li><a href="#home" class="nav-link active">Home</a></li>
-                <li><a href="#company-profile" class="nav-link">Company Profile</a></li>
-                <li><a href="#weekly-report" class="nav-link">Weekly Report</a></li>
-                
-                <!-- Fixed: Wrapped properly inside li container -->
-                <li><a href="#full-access" class="nav-link"><i class="fa-solid fa-lock"></i> Sign up for full access</a></li>
-                
-                <!-- Collapsible Dropdown Item -->
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle">Documents <span class="arrow">▼</span></a>
-                    <ul class="submenu">
-                        <li><a href="#see-documents" class="nav-link">View Documents</a></li>
-                        <li><a href="#add-documents" class="nav-link">Add Documents</a></li>
-                    </ul>
-                </li>
-            </ul>
+            <div class="sidebar-top">
+                <h2>Portfolio</h2>
+                <ul>
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#company-profile" class="nav-link">Company Profile</a></li>
+                    <li><a href="#weekly-report" class="nav-link">Weekly Report</a></li>
+                    
+                    <!-- Collapsible Dropdown Item -->
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle">Documents <span class="arrow">▼</span></a>
+                        <ul class="submenu">
+                            <li><a href="#see-documents" class="nav-link">View Documents</a></li>
+                            <li class="admin-only-inline"><a href="#add-documents" class="nav-link">Add Documents</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Bottom Anchored Admin Link -->
+            <div class="sidebar-bottom">
+                <a href="#full-access" class="nav-link admin-nav-btn" id="nav-admin-link">
+                    <i class="fa-solid fa-lock"></i> Admin Login
+                </a>
+            </div>
         </nav>
 
         <!-- Right side layout container -->
@@ -42,18 +48,22 @@
                     <h1>Jacin Kurt S. Ocampo</h1>
                     <p>BS Computer Engineering | OJT Portfolio</p>
                 </div>
+                <div id="admin-status-badge" class="admin-status-badge">
+                    <i class="fa-solid fa-user-shield"></i> Guest Mode
+                </div>
             </header>
 
             <!-- Main Dynamic Content Pages -->
             <main class="content">
             
-                <!-- Home Section: About Me Dashboard -->
+                <!-- Home Section -->
                 <section id="home" class="page active">
                     <div class="about-me-container">
                         <h2>About Me</h2>
                         <p class="lead-text">
-                            I am a Computer Engineering student with a strong interest in combining hardware fundamentals with software development to create practical and efficient solutions. This interactive portfolio showcases my learning journey, achievements, and hands-on experiences throughout my On-the-Job Training (OJT). It reflects the projects I have worked on, the skills I have developed, and the knowledge I continue to build. I strive to write clean and maintainable code, develop responsive and user-friendly interfaces, and create efficient program logic while continuously improving my technical and problem-solving abilities.
+                            I am a Computer Engineering student with a strong interest in combining hardware fundamentals with software development to create practical and efficient solutions. This interactive portfolio showcases my learning journey, achievements, and hands-on experiences throughout my On-the-Job Training (OJT).
                         </p>
+
                         <!-- Quick Contact Links -->
                         <div class="social-links">
                             <a href="https://www.facebook.com/prince.kurt.56232/" target="_blank" class="social-btn facebook" title="Facebook">
@@ -95,7 +105,7 @@
                             <ul>
                                 <li>Apply foundational academic computing theories directly to real-world deployment challenges.</li>
                                 <li>Master workspace best practices, technical documentation standards, and collaborative code structures.</li>
-                                <li>Develop production-grade problems-solving skills under direct industry guidance.</li>
+                                <li>Develop production-grade problem-solving skills under direct industry guidance.</li>
                             </ul>
                         </div>
                     </div>
@@ -111,27 +121,20 @@
                 <section id="weekly-report" class="page">
                     <div class="reports-header">
                         <h2>Weekly Reports</h2>
-                        <button id="open-report-modal" class="btn-primary">+ Create New Report</button>
+                        <button id="open-report-modal" class="btn-primary admin-only">+ Create New Report</button>
                     </div>
 
                     <!-- Interactive Timeline Log Container -->
                     <div id="report-timeline" class="log-list">
-                        <div class="log-item">
-                            <div class="log-item-header">
-                                <h3>Week 1 Report</h3>
-                                <button class="btn-delete" title="Delete Report"><i class="fa-solid fa-trash-can"></i></button>
-                            </div>
-                            <p><strong>Accomplished:</strong> Completed company onboarding, configured development environments, and established Git repository access trees.</p>
-                            <p><strong>Key Learnings:</strong> Mastered team version control workflows and brushed up on modular UI deployment guidelines.</p>
-                            <small>Logged on: July 2026</small>
-                        </div>
+                        <!-- Populated dynamically via JS -->
                     </div>
 
-                    <!-- Hidden Pop-up Modal Form Container -->
+                    <!-- Pop-up Modal Form Container (Add / Edit Report) -->
                     <div id="report-modal" class="modal-overlay">
                         <div class="modal-card">
-                            <h3>Log Weekly Progress</h3>
+                            <h3 id="report-modal-title">Log Weekly Progress</h3>
                             <form id="report-form">
+                                <input type="hidden" id="report-id-input">
                                 <div class="form-group">
                                     <label>Week Selection</label>
                                     <input type="text" id="report-week" placeholder="e.g., Week 2" required>
@@ -157,34 +160,48 @@
                     </div>
                 </section>
 
-                <!-- Documents Section -->
+                <!-- Documents Section (All Public Access) -->
                 <section id="see-documents" class="page">
-                    <h2>Submitted Documents</h2>
-                    <p class="section-desc">View and manage your cleared OJT credentials, endorsements, and certifications.</p>
+                    <div class="reports-header">
+                        <div>
+                            <h2>Submitted Documents</h2>
+                            <p class="section-desc">View and download all OJT credentials, endorsements, and certifications.</p>
+                        </div>
+                        <a href="#add-documents" class="btn-primary nav-link admin-only">+ Add Document</a>
+                    </div>
                     
                     <!-- Dynamic Document Grid Shelf -->
                     <div id="document-shelf" class="document-grid">
-                        <div class="doc-card privacy-public">
-                            <div class="doc-icon"><i class="fa-solid fa-file-shield"></i></div>
-                            <div class="doc-info">
-                                <div class="doc-title-row">
-                                    <h4>OJT Endorsement Letter</h4>
-                                    <button class="btn-doc-delete" title="Delete Document"><i class="fa-solid fa-trash-can"></i></button>
+                        <!-- Populated dynamically via JS -->
+                    </div>
+
+                    <!-- Modal Window to Edit Documents -->
+                    <div id="doc-edit-modal" class="modal-overlay">
+                        <div class="modal-card">
+                            <h3>Edit Document Metadata</h3>
+                            <form id="doc-edit-form">
+                                <input type="hidden" id="edit-doc-id">
+                                <div class="form-group">
+                                    <label>Document Title</label>
+                                    <input type="text" id="edit-doc-title" required>
                                 </div>
-                                <div class="doc-meta-row">
-                                    <small>Uploaded: 2026-07-10</small>
-                                    <span class="badge badge-public">Public</span>
+                                <div class="form-group">
+                                    <label>Upload Date</label>
+                                    <input type="date" id="edit-doc-date" required>
                                 </div>
-                            </div>
-                            <a href="#" class="btn-view" target="_blank">View File</a>
+                                <div class="modal-actions">
+                                    <button type="button" id="close-doc-modal" class="btn-secondary">Cancel</button>
+                                    <button type="submit" class="btn-primary">Save Changes</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </section>
 
-                <!-- Add Documents Section -->
-                <section id="add-documents" class="page">
+                <!-- Add Documents Section (Admin Restricted) -->
+                <section id="add-documents" class="page admin-only-page">
                     <h2>Add New Document</h2>
-                    <p class="section-desc">Upload credentials, medical clearances, or liability waivers directly to your repository shelf.</p>
+                    <p class="section-desc">Upload credentials, medical clearances, or waivers to the document shelf.</p>
                     
                     <div class="upload-container">
                         <form id="document-upload-form">
@@ -204,27 +221,26 @@
                                 <label>Date Uploaded</label>
                                 <input type="date" id="doc-date-input" required />
                             </div>
-
-                            <div class="form-group">
-                                <label>Privacy Classification</label>
-                                <select id="doc-privacy-input" required>
-                                    <option value="public">🌐 Public (Visible in Portfolio)</option>
-                                    <option value="confidential">🔒 Confidential (Restricted Access)</option>
-                                </select>
-                            </div>
                             
                             <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Upload to Shelf</button>
                         </form>
                     </div>
                 </section>
 
-                <!-- Fixed: Moved "full-access" container inside the <main> block alongside other pages -->
+                <!-- Administrative Login Container -->
                 <section id="full-access" class="page">
-                    <h2>Unlock Full Access</h2>
-                    <p>Enter the administrator credential password to view confidential documents and enable management controls.</p>
+                    <h2>Admin Control Authentication</h2>
+                    <p>Enter administrative credentials to enable global creation, editing, and deletion controls across reports and documents.</p>
+                    
                     <div class="auth-form-container" style="max-width: 400px; margin-top: 20px;">
-                        <input type="password" id="admin-password-input" placeholder="Enter password..." style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px;">
-                        <button type="button" id="btn-unlock-access" style="background-color: #800000; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%;">Unlock Access</button>
+                        <div id="login-box">
+                            <input type="password" id="admin-password-input" placeholder="Enter password..." style="width: 100%; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+                            <button type="button" id="btn-unlock-access" style="background-color: #800000; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%;">Unlock Admin Controls</button>
+                        </div>
+                        <div id="logout-box" style="display: none;">
+                            <p style="color: #28a745; font-weight: bold;">✓ Admin Privilege Active</p>
+                            <button type="button" id="btn-lock-access" style="background-color: #5c4a3c; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; width: 100%;">Lock / Log Out</button>
+                        </div>
                         <p id="auth-message" style="margin-top: 10px; font-weight: bold; display: none;"></p>
                     </div>
                 </section>
@@ -233,7 +249,6 @@
 
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
 </body>
 </html>

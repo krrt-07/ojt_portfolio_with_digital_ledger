@@ -1,348 +1,344 @@
-const SUPABASE_URL = "https://rbnfcljyxtgjatjpqwid.supabase.co";
-const SUPABASE_KEY = "sb_publishable_KklgYWVbyOhrL50nToZUJg_4rGhBSON"; 
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// Security State Tracking
-let hasFullAccess = false;
-const ADMIN_PASSWORD = "2024-03257-MN-0";
-
 /* ==========================================================================
-   1. Dynamic Tab Navigation & Dropdown Management
+   1. Global State & Admin Authentication Framework
    ========================================================================== */
-const sidebarLinks = document.querySelectorAll('.sidebar a.nav-link');
-const contentPages = document.querySelectorAll('.page');
-const dropdownToggle = document.querySelector('.dropdown-toggle');
+document.addEventListener('DOMContentLoaded', () => {
+    let isAdmin = localStorage.getItem('ojt_admin_access') === 'true';
 
-sidebarLinks.forEach(link => {
-  link.addEventListener('click', function(e) {
-    e.preventDefault();
+    // UI Admin Elements
+    const adminStatusBadge = document.getElementById('admin-status-badge');
+    const loginBox = document.getElementById('login-box');
+    const logoutBox = document.getElementById('logout-box');
+    const unlockBtn = document.getElementById('btn-unlock-access');
+    const lockBtn = document.getElementById('btn-lock-access');
+    const passwordInput = document.getElementById('admin-password-input');
+    const authMessage = document.getElementById('auth-message');
+    const navAdminLink = document.getElementById('nav-admin-link');
 
-    sidebarLinks.forEach(item => item.classList.remove('active'));
-    if (dropdownToggle) {
-      dropdownToggle.classList.remove('active');
+    function updateAdminUI() {
+        if (isAdmin) {
+            document.body.classList.add('is-admin');
+            if (adminStatusBadge) {
+                adminStatusBadge.innerHTML = '<i class="fa-solid fa-user-shield"></i> Admin Unlocked';
+                adminStatusBadge.style.background = '#28a745';
+            }
+            if (loginBox) loginBox.style.display = 'none';
+            if (logoutBox) logoutBox.style.display = 'block';
+            if (navAdminLink) navAdminLink.innerHTML = '<i class="fa-solid fa-user-check"></i> Admin Session';
+        } else {
+            document.body.classList.remove('is-admin');
+            if (adminStatusBadge) {
+                adminStatusBadge.innerHTML = '<i class="fa-solid fa-eye"></i> Guest Mode';
+                adminStatusBadge.style.background = 'rgba(255, 255, 255, 0.15)';
+            }
+            if (loginBox) loginBox.style.display = 'block';
+            if (logoutBox) logoutBox.style.display = 'none';
+            if (navAdminLink) navAdminLink.innerHTML = '<i class="fa-solid fa-lock"></i> Admin Login';
+        }
+        renderReports();
+        renderDocuments();
     }
-    
-    this.classList.add('active');
 
-    if (this.closest('.submenu') && dropdownToggle) {
-      dropdownToggle.classList.add('active');
+    // Unlock Admin Access Handler
+    unlockBtn?.addEventListener('click', () => {
+        if (passwordInput.value === 'admin123') {
+            isAdmin = true;
+            localStorage.setItem('ojt_admin_access', 'true');
+            authMessage.style.display = 'block';
+            authMessage.style.color = '#28a745';
+            authMessage.textContent = 'Access Granted! Full admin management controls activated.';
+            passwordInput.value = '';
+            updateAdminUI();
+        } else {
+            authMessage.style.display = 'block';
+            authMessage.style.color = '#dc3545';
+            authMessage.textContent = 'Invalid credentials. Please try again.';
+        }
+    });
+
+    // Lock Admin Session Handler
+    lockBtn?.addEventListener('click', () => {
+        isAdmin = false;
+        localStorage.setItem('ojt_admin_access', 'false');
+        authMessage.style.display = 'none';
+        updateAdminUI();
+        navigateToSection('#home');
+    });
+
+    /* ==========================================================================
+       2. Page Routing Navigation System
+       ========================================================================== */
+    const navLinks = document.querySelectorAll('.nav-link');
+    const pages = document.querySelectorAll('.page');
+
+    function navigateToSection(targetId) {
+        navLinks.forEach(link => link.classList.remove('active'));
+        pages.forEach(page => page.classList.remove('active'));
+
+        const activeLink = document.querySelector(`.nav-link[href="${targetId}"]`);
+        if (activeLink) activeLink.classList.add('active');
+
+        const targetPage = document.querySelector(targetId);
+        if (targetPage) targetPage.classList.add('active');
     }
 
-    contentPages.forEach(page => page.classList.remove('active'));
-    const targetPageId = this.getAttribute('href');
-    const targetPage = document.querySelector(targetPageId);
-    if (targetPage) {
-      targetPage.classList.add('active');
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            const href = link.getAttribute('href');
+            if (href && href.startsWith('#')) {
+                e.preventDefault();
+                navigateToSection(href);
+            }
+        });
+    });
+
+    /* ==========================================================================
+       3. Weekly Reports Management (Add, Edit, Delete)
+       ========================================================================== */
+    const openReportModalBtn = document.getElementById('open-report-modal');
+    const closeReportModalBtn = document.getElementById('close-report-modal');
+    const reportModal = document.getElementById('report-modal');
+    const reportForm = document.getElementById('report-form');
+    const reportTimeline = document.getElementById('report-timeline');
+    const reportModalTitle = document.getElementById('report-modal-title');
+    const reportIdInput = document.getElementById('report-id-input');
+
+    let reports = JSON.parse(localStorage.getItem('ojt_reports')) || [
+        {
+            id: 1,
+            week: 'Week 1 Report',
+            date: '2026-07-01',
+            accomplished: 'Completed company onboarding, configured development environments, and established Git repository access trees.',
+            learned: 'Mastered team version control workflows and brushed up on modular UI deployment guidelines.'
+        }
+    ];
+
+    openReportModalBtn?.addEventListener('click', () => {
+        reportForm.reset();
+        reportIdInput.value = '';
+        reportModalTitle.textContent = 'Log Weekly Progress';
+        reportModal.classList.add('open');
+    });
+
+    closeReportModalBtn?.addEventListener('click', () => reportModal.classList.remove('open'));
+
+    function renderReports() {
+        if (!reportTimeline) return;
+        reportTimeline.innerHTML = '';
+
+        reports.forEach(report => {
+            const item = document.createElement('div');
+            item.className = 'log-item';
+            item.innerHTML = `
+                <div class="log-item-header">
+                    <h3>${escapeHTML(report.week)}</h3>
+                    ${isAdmin ? `
+                        <div class="action-btn-group">
+                            <button class="btn-action edit btn-edit-report" data-id="${report.id}" title="Edit Report">
+                                <i class="fa-solid fa-pen-to-square"></i>
+                            </button>
+                            <button class="btn-action delete btn-delete-report" data-id="${report.id}" title="Delete Report">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </div>
+                    ` : ''}
+                </div>
+                <p><strong>Accomplished:</strong> ${escapeHTML(report.accomplished)}</p>
+                <p><strong>Key Learnings:</strong> ${escapeHTML(report.learned)}</p>
+                <small>Logged on: ${escapeHTML(report.date)}</small>
+            `;
+            reportTimeline.appendChild(item);
+        });
+
+        localStorage.setItem('ojt_reports', JSON.stringify(reports));
     }
-  });
+
+    reportForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const idVal = reportIdInput.value;
+        const weekVal = document.getElementById('report-week').value;
+        const dateVal = document.getElementById('report-date').value;
+        const accVal = document.getElementById('report-accomplished').value;
+        const learnVal = document.getElementById('report-learned').value;
+
+        if (idVal) {
+            // Edit existing report
+            const index = reports.findIndex(r => r.id === Number(idVal));
+            if (index !== -1) {
+                reports[index] = { id: Number(idVal), week: weekVal, date: dateVal, accomplished: accVal, learned: learnVal };
+            }
+        } else {
+            // Add new report
+            const newReport = { id: Date.now(), week: weekVal, date: dateVal, accomplished: accVal, learned: learnVal };
+            reports.unshift(newReport);
+        }
+
+        renderReports();
+        reportForm.reset();
+        reportModal.classList.remove('open');
+    });
+
+    reportTimeline?.addEventListener('click', (e) => {
+        const deleteBtn = e.target.closest('.btn-delete-report');
+        const editBtn = e.target.closest('.btn-edit-report');
+
+        if (deleteBtn && isAdmin) {
+            const id = Number(deleteBtn.getAttribute('data-id'));
+            reports = reports.filter(r => r.id !== id);
+            renderReports();
+        }
+
+        if (editBtn && isAdmin) {
+            const id = Number(editBtn.getAttribute('data-id'));
+            const report = reports.find(r => r.id === id);
+            if (report) {
+                reportIdInput.value = report.id;
+                document.getElementById('report-week').value = report.week;
+                document.getElementById('report-date').value = report.date;
+                document.getElementById('report-accomplished').value = report.accomplished;
+                document.getElementById('report-learned').value = report.learned;
+                
+                reportModalTitle.textContent = 'Edit Weekly Report';
+                reportModal.classList.add('open');
+            }
+        }
+    });
+
+    /* ==========================================================================
+       4. Document Repository Shelf (Public Reading / Admin File Modifications)
+       ========================================================================== */
+    const fileInput = document.getElementById('file-input');
+    const fileNamePreview = document.getElementById('file-name-preview');
+    const uploadForm = document.getElementById('document-upload-form');
+    const documentShelf = document.getElementById('document-shelf');
+
+    const docEditModal = document.getElementById('doc-edit-modal');
+    const docEditForm = document.getElementById('doc-edit-form');
+    const closeDocModalBtn = document.getElementById('close-doc-modal');
+
+    let documents = JSON.parse(localStorage.getItem('ojt_documents')) || [
+        {
+            id: 101,
+            title: 'OJT Endorsement Letter',
+            date: '2026-07-10',
+            fileUrl: '#'
+        }
+    ];
+
+    fileInput?.addEventListener('change', () => {
+        fileNamePreview.textContent = fileInput.files.length > 0 ? fileInput.files[0].name : 'No file selected';
+    });
+
+    function renderDocuments() {
+        if (!documentShelf) return;
+        documentShelf.innerHTML = '';
+
+        documents.forEach(doc => {
+            const card = document.createElement('div');
+            card.className = 'doc-card';
+            card.innerHTML = `
+                <div class="doc-icon">
+                    <i class="fa-solid fa-file-shield"></i>
+                </div>
+                <div class="doc-info">
+                    <div class="doc-title-row">
+                        <h4>${escapeHTML(doc.title)}</h4>
+                        ${isAdmin ? `
+                            <div class="action-btn-group">
+                                <button class="btn-action edit btn-edit-doc" data-id="${doc.id}" title="Edit Document Metadata">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+                                </button>
+                                <button class="btn-action delete btn-delete-doc" data-id="${doc.id}" title="Delete Document">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </div>
+                        ` : ''}
+                    </div>
+                    <div class="doc-meta-row">
+                        <small>Uploaded: ${escapeHTML(doc.date)}</small>
+                    </div>
+                </div>
+                <a href="${doc.fileUrl}" class="btn-view" target="_blank">View File</a>
+            `;
+            documentShelf.appendChild(card);
+        });
+
+        localStorage.setItem('ojt_documents', JSON.stringify(documents));
+    }
+
+    uploadForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        if (!isAdmin) return;
+
+        const titleVal = document.getElementById('doc-title-input').value;
+        const dateVal = document.getElementById('doc-date-input').value;
+        const fileObj = fileInput.files[0];
+
+        const newDoc = {
+            id: Date.now(),
+            title: titleVal,
+            date: dateVal,
+            fileUrl: fileObj ? URL.createObjectURL(fileObj) : '#'
+        };
+
+        documents.unshift(newDoc);
+        renderDocuments();
+
+        uploadForm.reset();
+        fileNamePreview.textContent = 'No file selected';
+        navigateToSection('#see-documents');
+    });
+
+    documentShelf?.addEventListener('click', (e) => {
+        const deleteBtn = e.target.closest('.btn-delete-doc');
+        const editBtn = e.target.closest('.btn-edit-doc');
+
+        if (deleteBtn && isAdmin) {
+            const id = Number(deleteBtn.getAttribute('data-id'));
+            documents = documents.filter(d => d.id !== id);
+            renderDocuments();
+        }
+
+        if (editBtn && isAdmin) {
+            const id = Number(editBtn.getAttribute('data-id'));
+            const doc = documents.find(d => d.id === id);
+            if (doc) {
+                document.getElementById('edit-doc-id').value = doc.id;
+                document.getElementById('edit-doc-title').value = doc.title;
+                document.getElementById('edit-doc-date').value = doc.date;
+                docEditModal.classList.add('open');
+            }
+        }
+    });
+
+    docEditForm?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const id = Number(document.getElementById('edit-doc-id').value);
+        const doc = documents.find(d => d.id === id);
+        
+        if (doc) {
+            doc.title = document.getElementById('edit-doc-title').value;
+            doc.date = document.getElementById('edit-doc-date').value;
+            renderDocuments();
+        }
+        
+        docEditModal.classList.remove('open');
+    });
+
+    closeDocModalBtn?.addEventListener('click', () => docEditModal.classList.remove('open'));
+
+    function escapeHTML(str) {
+        return str.replace(/[&<>'"]/g, 
+            tag => ({
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                "'": '&#39;',
+                '"': '&quot;'
+            }[tag] || tag)
+        );
+    }
+
+    // Initialize UI and render views
+    updateAdminUI();
 });
-
-/* ==========================================================================
-   2. Weekly Report Management
-   ========================================================================== */
-const openModalBtn = document.getElementById('open-report-modal');
-const closeModalBtn = document.getElementById('close-report-modal');
-const reportModal = document.getElementById('report-modal');
-const reportForm = document.getElementById('report-form');
-const timelineContainer = document.getElementById('report-timeline');
-
-if (openModalBtn) {
-  openModalBtn.addEventListener('click', () => {
-    if (!hasFullAccess) {
-      alert("Access Denied: You must sign up for full access to add weekly reports.");
-      return;
-    }
-    reportModal.classList.add('open');
-  });
-}
-
-if (closeModalBtn) {
-  closeModalBtn.addEventListener('click', () => {
-    reportModal.classList.remove('open');
-    reportForm.reset();
-  });
-}
-
-function displayReportCard(id, week, date, accomplished, learned) {
-  const newLogItem = document.createElement('div');
-  newLogItem.classList.add('log-item');
-  newLogItem.setAttribute('data-id', id);
-
-  const deleteButtonHtml = hasFullAccess 
-    ? `<button class="btn-delete" title="Delete Report"><i class="fa-solid fa-trash-can"></i></button>`
-    : '';
-
-  newLogItem.innerHTML = `
-    <div class="log-item-header">
-      <h3>${week} Report</h3>
-      ${deleteButtonHtml}
-    </div>
-    <p><strong>Accomplished:</strong> ${accomplished}</p>
-    <p><strong>Key Learnings:</strong> ${learned}</p>
-    <small>Logged on: ${date}</small>
-  `;
-
-  if (timelineContainer) {
-    timelineContainer.insertBefore(newLogItem, timelineContainer.firstChild);
-  }
-}
-
-async function loadWeeklyReports() {
-  if (!timelineContainer) return;
-  timelineContainer.innerHTML = '';
-  
-  const { data: reports, error } = await supabaseClient
-    .from('weekly_reports')
-    .select('*')
-    .order('id', { ascending: true });
-
-  if (error) {
-    console.error("Error loading reports:", error.message);
-    return;
-  }
-
-  reports.forEach(report => {
-    displayReportCard(report.id, report.week_number, report.upload_date, report.accomplished, report.learned);
-  });
-}
-
-if (reportForm) {
-  reportForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-    if (!hasFullAccess) {
-      alert("Access Denied: Restricted operation.");
-      return;
-    }
-
-    const weekVal = document.getElementById('report-week').value;
-    const dateVal = document.getElementById('report-date').value;
-    const accomplishedVal = document.getElementById('report-accomplished').value;
-    const learnedVal = document.getElementById('report-learned').value;
-
-    const { data, error } = await supabaseClient
-      .from('weekly_reports')
-      .insert([{ week_number: weekVal, upload_date: dateVal, accomplished: accomplishedVal, learned: learnedVal }])
-      .select();
-
-    if (error) {
-      alert("Database error: " + error.message);
-      return;
-    }
-
-    if (data && data[0]) {
-      displayReportCard(data[0].id, weekVal, dateVal, accomplishedVal, learnedVal);
-    }
-
-    reportModal.classList.remove('open');
-    reportForm.reset();
-  });
-}
-
-if (timelineContainer) {
-  timelineContainer.addEventListener('click', async function(e) {
-    const deleteBtn = e.target.closest('.btn-delete');
-    if (deleteBtn) {
-      if (!hasFullAccess) {
-        alert("Access Denied: You do not have permission to delete entries.");
-        return;
-      }
-      const logItem = deleteBtn.closest('.log-item');
-      const reportId = logItem.getAttribute('data-id');
-      
-      if (logItem && confirm('Are you sure you want to delete this weekly report permanently?')) {
-        const { error } = await supabaseClient.from('weekly_reports').delete().eq('id', reportId);
-        if (error) alert("Error deleting report: " + error.message);
-        else logItem.remove();
-      }
-    }
-  });
-}
-
-/* ==========================================================================
-   3. Document Vault Management
-   ========================================================================== */
-const fileInput = document.getElementById('file-input');
-const fileNamePreview = document.getElementById('file-name-preview');
-const docTitleInput = document.getElementById('doc-title-input');
-const docDateInput = document.getElementById('doc-date-input');
-const docPrivacyInput = document.getElementById('doc-privacy-input');
-const uploadForm = document.getElementById('document-upload-form');
-const documentShelf = document.getElementById('document-shelf');
-
-if (fileInput) {
-  fileInput.addEventListener('change', function() {
-    if (this.files && this.files[0]) {
-      fileNamePreview.textContent = `Selected: ${this.files[0].name}`;
-      if (!docTitleInput.value) docTitleInput.value = this.files[0].name.split('.')[0];
-      if (!docDateInput.value) docDateInput.value = new Date().toISOString().split('T')[0];
-    } else {
-      fileNamePreview.textContent = "No file selected";
-    }
-  });
-}
-
-function displayDocumentCard(id, title, date, privacy, fileUrl) {
-  const newCard = document.createElement('div');
-  newCard.classList.add('doc-card', `privacy-${privacy}`);
-  newCard.setAttribute('data-id', id);
-
-  const isPdf = fileUrl.toLowerCase().includes('.pdf') || title.toLowerCase().includes('pdf');
-  const iconClass = isPdf ? 'fa-solid fa-file-pdf' : 'fa-solid fa-file-image';
-  
-  const badgeClass = privacy === 'confidential' ? 'badge-confidential' : 'badge-public';
-  const badgeLabel = privacy === 'confidential' ? 'Confidential' : 'Public';
-
-  const deleteButtonHtml = hasFullAccess 
-    ? `<button class="btn-doc-delete" title="Delete Document"><i class="fa-solid fa-trash-can"></i></button>`
-    : '';
-
-  newCard.innerHTML = `
-    <div class="doc-icon"><i class="${iconClass}"></i></div>
-    <div class="doc-info">
-      <div class="doc-title-row">
-        <h4>${title}</h4>
-        ${deleteButtonHtml}
-      </div>
-      <div class="doc-meta-row">
-        <small>Uploaded: ${date}</small>
-        <span class="badge ${badgeClass}">${badgeLabel}</span>
-      </div>
-    </div>
-    <a href="${fileUrl}" class="btn-view" target="_blank">View File</a>
-  `;
-
-  if (documentShelf) {
-    documentShelf.insertBefore(newCard, documentShelf.firstChild);
-  }
-}
-
-async function loadDocuments() {
-  if (!documentShelf) return;
-  documentShelf.innerHTML = '';
-  
-  let query = supabaseClient.from('documents').select('*');
-
-  if (!hasFullAccess) {
-    query = query.eq('privacy', 'public');
-  }
-
-  const { data: docs, error } = await query.order('id', { ascending: true });
-
-  if (error) {
-    console.error("Error loading documents:", error.message);
-    return;
-  }
-
-  docs.forEach(doc => {
-    displayDocumentCard(doc.id, doc.title, doc.upload_date, doc.privacy, doc.file_url);
-  });
-}
-
-if (uploadForm) {
-  uploadForm.addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    // FIXED: Security check prevents file uploads if access is locked
-    if (!hasFullAccess) {
-      alert("Access Denied: You must sign up for full access to upload files.");
-      return;
-    }
-
-    const selectedFile = fileInput.files[0];
-    const customTitle = docTitleInput.value;
-    const selectedDate = docDateInput.value;
-    const privacySetting = docPrivacyInput.value;
-
-    if (!selectedFile) return;
-
-    const fileExtension = selectedFile.name.split('.').pop();
-    const uniqueFileName = `${Date.now()}_${Math.random().toString(36).substr(2, 9)}.${fileExtension}`;
-
-    const { data: storageData, error: storageError } = await supabaseClient
-      .storage
-      .from('portfolio_docs')
-      .upload(uniqueFileName, selectedFile);
-
-    if (storageError) {
-      alert("Storage Upload Failed: " + storageError.message);
-      return;
-    }
-
-    const { data: urlData } = supabaseClient.storage.from('portfolio_docs').getPublicUrl(uniqueFileName);
-    const publicFileUrl = urlData.publicUrl;
-
-    const { data: dbData, error: dbError } = await supabaseClient
-      .from('documents')
-      .insert([{ title: customTitle, upload_date: selectedDate, privacy: privacySetting, file_url: publicFileUrl }])
-      .select();
-
-    if (dbError) {
-      alert("Metadata Registration Failed: " + dbError.message);
-      return;
-    }
-
-    if (dbData && dbData[0]) {
-      if (privacySetting === 'public' || hasFullAccess) {
-        displayDocumentCard(dbData[0].id, customTitle, selectedDate, privacySetting, publicFileUrl);
-      }
-    }
-
-    uploadForm.reset();
-    fileNamePreview.textContent = "No file selected";
-    alert('Document saved successfully!');
-  });
-}
-
-if (documentShelf) {
-  documentShelf.addEventListener('click', async function(e) {
-    const deleteBtn = e.target.closest('.btn-doc-delete');
-    if (deleteBtn) {
-      if (!hasFullAccess) {
-        alert("Access Denied: You do not have permission to delete entries.");
-        return;
-      }
-      const docCard = deleteBtn.closest('.doc-card');
-      const docId = docCard.getAttribute('data-id');
-      
-      if (docCard && confirm('Are you sure you want to delete this file?')) {
-        const { error } = await supabaseClient.from('documents').delete().eq('id', docId);
-        if (error) alert("Error removing document: " + error.message);
-        else docCard.remove();
-      }
-    }
-  });
-}
-
-/* ==========================================================================
-   4. Gatekeeper Authentication Engine
-   ========================================================================== */
-const passwordInput = document.getElementById('admin-password-input');
-const unlockBtn = document.getElementById('btn-unlock-access');
-const authMessage = document.getElementById('auth-message');
-
-if (unlockBtn) {
-  unlockBtn.addEventListener('click', () => {
-    const enteredPassword = passwordInput.value.trim();
-
-    if (enteredPassword === ADMIN_PASSWORD) {
-      hasFullAccess = true;
-      
-      authMessage.textContent = "Access Granted! Management mode enabled.";
-      authMessage.style.color = "green";
-      authMessage.style.display = "block";
-      passwordInput.value = "";
-
-      loadDocuments();
-      loadWeeklyReports();
-    } else {
-      hasFullAccess = false;
-      authMessage.textContent = "Incorrect password. Please try again.";
-      authMessage.style.color = "red";
-      authMessage.style.display = "block";
-    }
-  });
-}
-
-// Global initialization run execution
-loadWeeklyReports();
-loadDocuments();
