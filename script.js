@@ -4,7 +4,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     let isAdmin = localStorage.getItem('ojt_admin_access') === 'true';
 
-    // UI Admin Elements
+    // UI Admin Control Elements
     const adminStatusBadge = document.getElementById('admin-status-badge');
     const loginBox = document.getElementById('login-box');
     const logoutBox = document.getElementById('logout-box');
@@ -92,7 +92,58 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ==========================================================================
-       3. Weekly Reports Management (Add, Edit, Delete)
+       3. Full-Screen Image Lightbox Zoom Handler
+       ========================================================================== */
+    const zoomTrigger1 = document.getElementById('zoom-trigger-1');
+    const zoomTrigger2 = document.getElementById('zoom-trigger-2');
+    const lightboxModal = document.getElementById('lightbox-modal');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const lightboxCaption = document.getElementById('lightbox-caption');
+    const closeLightboxBtn = document.getElementById('close-lightbox');
+
+    function openZoomModal(imageSrc, captionText) {
+        if (lightboxModal && lightboxImg && lightboxCaption) {
+            lightboxImg.src = imageSrc;
+            lightboxCaption.textContent = captionText;
+            lightboxModal.classList.add('active');
+        }
+    }
+
+    function closeZoomModal() {
+        if (lightboxModal) {
+            lightboxModal.classList.remove('active');
+        }
+    }
+
+    // Click listener for Chart 1
+    zoomTrigger1?.addEventListener('click', () => {
+        openZoomModal('orgchart1.png', 'NTC NCR - Main Organizational Chart');
+    });
+
+    // Click listener for Chart 2
+    zoomTrigger2?.addEventListener('click', () => {
+        openZoomModal('orgchart2.png', 'NTC NCR - Support Staff Chart');
+    });
+
+    // Close button listener
+    closeLightboxBtn?.addEventListener('click', closeZoomModal);
+
+    // Close when clicking dark background outside the image
+    lightboxModal?.addEventListener('click', (e) => {
+        if (e.target === lightboxModal) {
+            closeZoomModal();
+        }
+    });
+
+    // Close when pressing the 'Escape' key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && lightboxModal?.classList.contains('active')) {
+            closeZoomModal();
+        }
+    });
+
+    /* ==========================================================================
+       4. Weekly Reports Management (Add, Edit, Delete)
        ========================================================================== */
     const openReportModalBtn = document.getElementById('open-report-modal');
     const closeReportModalBtn = document.getElementById('close-report-modal');
@@ -162,13 +213,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const learnVal = document.getElementById('report-learned').value;
 
         if (idVal) {
-            // Edit existing report
             const index = reports.findIndex(r => r.id === Number(idVal));
             if (index !== -1) {
                 reports[index] = { id: Number(idVal), week: weekVal, date: dateVal, accomplished: accVal, learned: learnVal };
             }
         } else {
-            // Add new report
             const newReport = { id: Date.now(), week: weekVal, date: dateVal, accomplished: accVal, learned: learnVal };
             reports.unshift(newReport);
         }
@@ -205,7 +254,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     /* ==========================================================================
-       4. Document Repository Shelf (Public Reading / Admin File Modifications)
+       5. Document Repository Shelf Controls
        ========================================================================== */
     const fileInput = document.getElementById('file-input');
     const fileNamePreview = document.getElementById('file-name-preview');
