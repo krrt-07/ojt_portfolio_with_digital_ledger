@@ -389,108 +389,113 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 /* ==========================================================================
-       6. Background Music & Floating Control Management (Continuous Playback)
-       ========================================================================== */
-    const bgAudio = document.getElementById('bg-music');
-    const musicToggleBtn = document.getElementById('music-toggle-btn');
-    const musicIcon = document.getElementById('music-icon');
-    const volumeSlider = document.getElementById('music-volume-slider');
-    const volumePercentage = document.getElementById('volume-percentage');
+   6. Background Music Management (Autoplay @ 20% Volume)
+   ========================================================================== */
+const bgAudio = document.getElementById('bg-music');
+const musicToggleBtn = document.getElementById('music-toggle-btn');
+const musicIcon = document.getElementById('music-icon');
+const volumeSlider = document.getElementById('music-volume-slider');
+const volumePercentage = document.getElementById('volume-percentage');
 
-    if (bgAudio) {
-        // Track whether the user explicitly muted the music
-        let userMuted = localStorage.getItem('ojt_music_muted') === 'true';
+if (bgAudio) {
+    // 1. Force initial volume strictly to 20%
+    bgAudio.volume = 0.2;
+    bgAudio.loop = true;
 
-        // Set initial parameters strictly at 20% unless previously muted by user
-        bgAudio.volume = userMuted ? 0 : 0.2;
-        bgAudio.loop = true;
+    if (volumeSlider) volumeSlider.value = 0.2;
+    if (volumePercentage) volumePercentage.textContent = '20%';
 
-        if (volumeSlider) volumeSlider.value = bgAudio.volume;
-        if (volumePercentage) volumePercentage.textContent = Math.round(bgAudio.volume * 100) + '%';
+    let userMuted = false;
 
-        function updateMusicUI(isPlaying) {
-            if (isPlaying) {
-                musicIcon.className = 'fa-solid fa-music';
-                musicToggleBtn.setAttribute('aria-label', 'Mute background music');
-                musicToggleBtn.setAttribute('title', 'Mute background music');
-                musicToggleBtn.classList.remove('muted');
-            } else {
-                musicIcon.className = 'fa-solid fa-volume-xmark';
-                musicToggleBtn.setAttribute('aria-label', 'Unmute background music');
-                musicToggleBtn.setAttribute('title', 'Unmute background music');
-                musicToggleBtn.classList.add('muted');
-            }
+    function updateMusicUI(isPlaying) {
+        if (!musicIcon || !musicToggleBtn) return;
+        if (isPlaying) {
+            musicIcon.className = 'fa-solid fa-music';
+            musicToggleBtn.setAttribute('aria-label', 'Mute background music');
+            musicToggleBtn.setAttribute('title', 'Mute background music');
+            musicToggleBtn.classList.remove('muted');
+        } else {
+            musicIcon.className = 'fa-solid fa-volume-xmark';
+            musicToggleBtn.setAttribute('aria-label', 'Unmute background music');
+            musicToggleBtn.setAttribute('title', 'Unmute background music');
+            musicToggleBtn.classList.add('muted');
         }
+    }
 
-        // Helper function to safely play audio if user has not muted
-        function playAudioIfAllowed() {
-            if (userMuted) return;
+    // 2. Attempt immediate audio playback on site load
+    function attemptImmediatePlayback() {
+        if (userMuted) return;
 
-            bgAudio.play().then(() => {
+        const playPromise = bgAudio.play();
+        if (playPromise !== undefined) {
+            playPromise.then(() => {
                 updateMusicUI(true);
             }).catch(() => {
+                // If browser blocks unmuted load autoplay, start instantly on first interaction
                 updateMusicUI(false);
+                bindFallbackInteraction();
             });
         }
+    }
 
-        // Attempt playback immediately on load
-        playAudioIfAllowed();
-
-        // Continuous Playback Enforcer:
-        // Any interaction (click, scroll, touch, keypress) will start/resume playback unless explicitly muted
-        const enforcePlaybackHandler = () => {
+    // 3. Instant resume on first touch, click, scroll, or keypress if blocked on load
+    function bindFallbackInteraction() {
+        const startOnInteraction = () => {
             if (!userMuted && bgAudio.paused) {
-                playAudioIfAllowed();
+                bgAudio.play().then(() => updateMusicUI(true)).catch(() => {});
             }
+            ['pointerdown', 'click', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
+                document.removeEventListener(evt, startOnInteraction);
+            });
         };
 
-        ['click', 'touchstart', 'keydown', 'scroll'].forEach(eventType => {
-            document.addEventListener(eventType, enforcePlaybackHandler, { passive: true });
-        });
-
-        // Toggle Play / Mute on Bubble Click (Explicit User Action)
-        musicToggleBtn?.addEventListener('click', (e) => {
-            e.stopPropagation();
-            if (bgAudio.paused) {
-                userMuted = false;
-                localStorage.setItem('ojt_music_muted', 'false');
-                
-                // Restore volume to 20% if it was set to 0
-                if (bgAudio.volume === 0) {
-                    bgAudio.volume = 0.2;
-                    if (volumeSlider) volumeSlider.value = 0.2;
-                    if (volumePercentage) volumePercentage.textContent = '20%';
-                }
-                playAudioIfAllowed();
-            } else {
-                userMuted = true;
-                localStorage.setItem('ojt_music_muted', 'true');
-                bgAudio.pause();
-                updateMusicUI(false);
-            }
-        });
-
-        // Volume Slider Handler
-        volumeSlider?.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            bgAudio.volume = val;
-            
-            if (volumePercentage) {
-                volumePercentage.textContent = Math.round(val * 100) + '%';
-            }
-
-            if (val === 0) {
-                userMuted = true;
-                localStorage.setItem('ojt_music_muted', 'true');
-                bgAudio.pause();
-                updateMusicUI(false);
-            } else {
-                userMuted = false;
-                localStorage.setItem('ojt_music_muted', 'false');
-                playAudioIfAllowed();
-            }
+        ['pointerdown', 'click', 'keydown', 'scroll', 'touchstart'].forEach(evt => {
+            document.addEventListener(evt, startOnInteraction, { once: true, passive: true });
         });
     }
+
+    // Execute playback attempt as soon as script runs
+    attemptImmediatePlayback();
+
+    // 4. Mute / Unmute Toggle Button (THE ONLY WAY TO STOP MUSIC)
+    musicToggleBtn?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (bgAudio.paused) {
+            userMuted = false;
+            if (bgAudio.volume === 0) {
+                bgAudio.volume = 0.2;
+                if (volumeSlider) volumeSlider.value = 0.2;
+                if (volumePercentage) volumePercentage.textContent = '20%';
+            }
+            bgAudio.play().then(() => updateMusicUI(true)).catch(() => {});
+        } else {
+            userMuted = true; // Prevents any script or event from resuming music
+            bgAudio.pause();
+            updateMusicUI(false);
+        }
+    });
+
+    // 5. Volume Slider Control
+    volumeSlider?.addEventListener('input', (e) => {
+        const val = parseFloat(e.target.value);
+        bgAudio.volume = val;
+        
+        if (volumePercentage) {
+            volumePercentage.textContent = Math.round(val * 100) + '%';
+        }
+
+        if (val === 0) {
+            userMuted = true;
+            bgAudio.pause();
+            updateMusicUI(false);
+        } else {
+            userMuted = false;
+            if (bgAudio.paused) {
+                bgAudio.play().then(() => updateMusicUI(true)).catch(() => {});
+            }
+        }
+    });
+}
 
     // Initialize UI and render views
     updateAdminUI();
