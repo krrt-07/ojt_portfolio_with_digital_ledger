@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digital Ledger</title>
+    <title>PERSONAL PORTFOLIO</title>
     <!-- FontAwesome Library -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
@@ -545,6 +545,31 @@
 
         </div>
     </div>
+
+    <!-- Background Audio Element -->
+    <audio id="bg-music" src="Timeless.mp3" loop preload="auto"></audio>
+
+    <!-- Floating Background Music Widget -->
+    <div class="music-player-widget" id="music-widget">
+        <div class="music-slider-container" id="music-slider-container">
+            <label for="music-volume-slider" class="sr-only">Volume Control</label>
+            <input 
+                type="range" 
+                id="music-volume-slider" 
+                class="music-volume-slider" 
+                min="0" 
+                max="1" 
+                step="0.01" 
+                value="0.2" 
+                aria-label="Background music volume control"
+            >
+            <span id="volume-percentage" class="volume-percentage">15%</span>
+        </div>
+        <button type="button" id="music-toggle-btn" class="music-bubble-btn" aria-label="Toggle background music" title="Toggle background music">
+            <i id="music-icon" class="fa-solid fa-music"></i>
+        </button>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

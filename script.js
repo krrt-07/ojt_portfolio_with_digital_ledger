@@ -388,6 +388,90 @@ document.addEventListener('DOMContentLoaded', () => {
         );
     }
 
+/* ==========================================================================
+       6. Background Music & Floating Control Management
+       ========================================================================== */
+    const bgAudio = document.getElementById('bg-music');
+    const musicToggleBtn = document.getElementById('music-toggle-btn');
+    const musicIcon = document.getElementById('music-icon');
+    const volumeSlider = document.getElementById('music-volume-slider');
+    const volumePercentage = document.getElementById('volume-percentage');
+
+    if (bgAudio) {
+        // Set initial parameters strictly at 10%
+        bgAudio.volume = 0.15;
+        bgAudio.loop = true;
+
+        if (volumeSlider) volumeSlider.value = 0.15;
+        if (volumePercentage) volumePercentage.textContent = '15%';
+
+        function updateMusicUI(isPlaying) {
+            if (isPlaying) {
+                musicIcon.className = 'fa-solid fa-music';
+                musicToggleBtn.setAttribute('aria-label', 'Mute background music');
+                musicToggleBtn.setAttribute('title', 'Mute background music');
+                musicToggleBtn.classList.remove('muted');
+            } else {
+                musicIcon.className = 'fa-solid fa-volume-xmark';
+                musicToggleBtn.setAttribute('aria-label', 'Unmute background music');
+                musicToggleBtn.setAttribute('title', 'Unmute background music');
+                musicToggleBtn.classList.add('muted');
+            }
+        }
+
+        // Handle Browser Autoplay Policy
+        function attemptAutoplay() {
+            const playPromise = bgAudio.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    updateMusicUI(true);
+                }).catch(() => {
+                    updateMusicUI(false);
+
+                    const enableAudioOnUserInteraction = () => {
+                        bgAudio.play().then(() => {
+                            updateMusicUI(true);
+                        }).catch(() => {});
+                        document.removeEventListener('click', enableAudioOnUserInteraction);
+                        document.removeEventListener('touchstart', enableAudioOnUserInteraction);
+                        document.removeEventListener('keydown', enableAudioOnUserInteraction);
+                    };
+
+                    document.addEventListener('click', enableAudioOnUserInteraction, { once: true });
+                    document.addEventListener('touchstart', enableAudioOnUserInteraction, { once: true });
+                    document.addEventListener('keydown', enableAudioOnUserInteraction, { once: true });
+                });
+            }
+        }
+
+        attemptAutoplay();
+
+        // Toggle Play/Pause on Bubble Click
+        musicToggleBtn?.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (bgAudio.paused) {
+                bgAudio.play().then(() => updateMusicUI(true)).catch(() => {});
+            } else {
+                bgAudio.pause();
+                updateMusicUI(false);
+            }
+        });
+
+        // Volume Adjustment Handler
+        volumeSlider?.addEventListener('input', (e) => {
+            const val = parseFloat(e.target.value);
+            bgAudio.volume = val;
+            if (volumePercentage) {
+                volumePercentage.textContent = Math.round(val * 100) + '%';
+            }
+            if (val === 0) {
+                updateMusicUI(false);
+            } else if (bgAudio.paused) {
+                bgAudio.play().then(() => updateMusicUI(true)).catch(() => {});
+            }
+        });
+    }
+
     // Initialize UI and render views
     updateAdminUI();
 });
