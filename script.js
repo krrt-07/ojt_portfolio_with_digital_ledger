@@ -389,7 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 /* ==========================================================================
-       6. Background Music & Floating Control Management
+       6. Background Music & Floating Control Management (Continuous Playback)
        ========================================================================== */
     const bgAudio = document.getElementById('bg-music');
     const musicToggleBtn = document.getElementById('music-toggle-btn');
@@ -398,12 +398,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const volumePercentage = document.getElementById('volume-percentage');
 
     if (bgAudio) {
-        // Set initial parameters strictly at 10%
-        bgAudio.volume = 0.15;
+        // Track whether the user explicitly muted the music
+        let userMuted = localStorage.getItem('ojt_music_muted') === 'true';
+
+        // Set initial parameters strictly at 20% unless previously muted by user
+        bgAudio.volume = userMuted ? 0 : 0.2;
         bgAudio.loop = true;
 
-        if (volumeSlider) volumeSlider.value = 0.15;
-        if (volumePercentage) volumePercentage.textContent = '15%';
+        if (volumeSlider) volumeSlider.value = bgAudio.volume;
+        if (volumePercentage) volumePercentage.textContent = Math.round(bgAudio.volume * 100) + '%';
 
         function updateMusicUI(isPlaying) {
             if (isPlaying) {
@@ -419,55 +422,72 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
 
-        // Handle Browser Autoplay Policy
-        function attemptAutoplay() {
-            const playPromise = bgAudio.play();
-            if (playPromise !== undefined) {
-                playPromise.then(() => {
-                    updateMusicUI(true);
-                }).catch(() => {
-                    updateMusicUI(false);
+        // Helper function to safely play audio if user has not muted
+        function playAudioIfAllowed() {
+            if (userMuted) return;
 
-                    const enableAudioOnUserInteraction = () => {
-                        bgAudio.play().then(() => {
-                            updateMusicUI(true);
-                        }).catch(() => {});
-                        document.removeEventListener('click', enableAudioOnUserInteraction);
-                        document.removeEventListener('touchstart', enableAudioOnUserInteraction);
-                        document.removeEventListener('keydown', enableAudioOnUserInteraction);
-                    };
-
-                    document.addEventListener('click', enableAudioOnUserInteraction, { once: true });
-                    document.addEventListener('touchstart', enableAudioOnUserInteraction, { once: true });
-                    document.addEventListener('keydown', enableAudioOnUserInteraction, { once: true });
-                });
-            }
+            bgAudio.play().then(() => {
+                updateMusicUI(true);
+            }).catch(() => {
+                updateMusicUI(false);
+            });
         }
 
-        attemptAutoplay();
+        // Attempt playback immediately on load
+        playAudioIfAllowed();
 
-        // Toggle Play/Pause on Bubble Click
+        // Continuous Playback Enforcer:
+        // Any interaction (click, scroll, touch, keypress) will start/resume playback unless explicitly muted
+        const enforcePlaybackHandler = () => {
+            if (!userMuted && bgAudio.paused) {
+                playAudioIfAllowed();
+            }
+        };
+
+        ['click', 'touchstart', 'keydown', 'scroll'].forEach(eventType => {
+            document.addEventListener(eventType, enforcePlaybackHandler, { passive: true });
+        });
+
+        // Toggle Play / Mute on Bubble Click (Explicit User Action)
         musicToggleBtn?.addEventListener('click', (e) => {
             e.stopPropagation();
             if (bgAudio.paused) {
-                bgAudio.play().then(() => updateMusicUI(true)).catch(() => {});
+                userMuted = false;
+                localStorage.setItem('ojt_music_muted', 'false');
+                
+                // Restore volume to 20% if it was set to 0
+                if (bgAudio.volume === 0) {
+                    bgAudio.volume = 0.2;
+                    if (volumeSlider) volumeSlider.value = 0.2;
+                    if (volumePercentage) volumePercentage.textContent = '20%';
+                }
+                playAudioIfAllowed();
             } else {
+                userMuted = true;
+                localStorage.setItem('ojt_music_muted', 'true');
                 bgAudio.pause();
                 updateMusicUI(false);
             }
         });
 
-        // Volume Adjustment Handler
+        // Volume Slider Handler
         volumeSlider?.addEventListener('input', (e) => {
             const val = parseFloat(e.target.value);
             bgAudio.volume = val;
+            
             if (volumePercentage) {
                 volumePercentage.textContent = Math.round(val * 100) + '%';
             }
+
             if (val === 0) {
+                userMuted = true;
+                localStorage.setItem('ojt_music_muted', 'true');
+                bgAudio.pause();
                 updateMusicUI(false);
-            } else if (bgAudio.paused) {
-                bgAudio.play().then(() => updateMusicUI(true)).catch(() => {});
+            } else {
+                userMuted = false;
+                localStorage.setItem('ojt_music_muted', 'false');
+                playAudioIfAllowed();
             }
         });
     }
